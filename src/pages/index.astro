@@ -58,14 +58,14 @@ const pageDescription = "Support 35+ Million lives with our professional EAP ser
             { value: '42%', label: 'Increase in good mental health ratings' }
           ].map(stat => (
             <div class="glass-card p-8 rounded-3xl reveal border-white/[0.03] group hover:border-teal/20">
-              <div class="text-4xl md:text-5xl font-bold text-teal mb-4 stat-number" data-value={parseInt(stat.value)} data-suffix="%">{stat.value}</div>
+              <div class="text-3xl sm:text-4xl md:text-5xl font-bold text-teal mb-4 stat-number" data-value={parseInt(stat.value)} data-suffix="%">{stat.value}</div>
               <div class="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">{stat.label}</div>
             </div>
           ))}
         </div>
 
         <!-- Benefits -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-20">
           {benefits.map(benefit => (
             <div class="flex items-start text-left reveal group">
               <div class="w-10 h-10 bg-teal rounded-xl flex items-center justify-center mr-4 mt-1 flex-shrink-0">
@@ -93,7 +93,7 @@ const pageDescription = "Support 35+ Million lives with our professional EAP ser
             Accredited by the Council on Accreditation with strict clinical governance standards.
           </p>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {accreditations.map(item => (
               <div class="glass-card p-6 rounded-2xl reveal border-white/[0.03]">
                 <div class="w-10 h-10 bg-teal/20 rounded-xl flex items-center justify-center mb-4 mx-auto">
@@ -122,16 +122,16 @@ const pageDescription = "Support 35+ Million lives with our professional EAP ser
           <p class="text-slate-400 text-sm max-w-2xl mx-auto">Choose the right level of support for your organization. All plans include our core EAP services with transparent, per-employee pricing.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto pt-6">
           {pricing.map(plan => (
-            <div class={`glass-card p-8 rounded-3xl border-white/[0.03] flex flex-col ${plan.popular ? 'border-teal/30 ring-1 ring-teal/20 scale-105 shadow-2xl shadow-teal/5 relative z-10' : ''}`}>
-              {plan.popular && <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-teal text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Most Popular</div>}
+            <div class={`glass-card p-6 sm:p-8 rounded-3xl border-white/[0.03] flex flex-col ${plan.popular ? 'border-teal/30 ring-1 ring-teal/20 md:scale-105 shadow-2xl shadow-teal/5 relative z-10' : ''}`}>
+              {plan.popular && <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-teal text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest whitespace-nowrap">Most Popular</div>}
               <h3 class="text-2xl font-bold mb-2">{plan.name}</h3>
               <p class="text-slate-400 text-xs mb-6 uppercase tracking-widest">{plan.subtitle}</p>
 
-              <div class="flex items-baseline gap-1 mb-1">
-                <span class="text-4xl font-extrabold text-white tracking-tight">{plan.currency}{plan.priceYearly}</span>
-                <span class="text-slate-500 text-sm italic">per employee per year</span>
+              <div class="flex flex-wrap items-baseline gap-1 mb-1">
+                <span class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">{plan.currency}{plan.priceYearly}</span>
+                <span class="text-slate-500 text-xs sm:text-sm italic">per employee per year</span>
               </div>
               <p class="text-lg text-teal font-bold mb-10 tracking-tight">Monthly equivalent {plan.currency}{plan.priceMonthly}</p>
 
@@ -160,9 +160,9 @@ const pageDescription = "Support 35+ Million lives with our professional EAP ser
     <!-- Lead Gen / Contact Section -->
     <section id="contact" class="py-24 px-4 relative overflow-hidden bg-brand-bg-secondary/30">
       <div class="max-w-3xl mx-auto">
-        <div class="glass-card p-8 md:p-12 rounded-[2.5rem] border-white/[0.05] relative z-10">
+        <div class="glass-card p-6 sm:p-8 md:p-12 rounded-2xl sm:rounded-[2.5rem] border-white/[0.05] relative z-10">
           <div class="text-center mb-10">
-            <h2 class="text-3xl font-bold mb-4">Ready to Transform Your <span class="text-teal">Workplace Wellbeing</span>?</h2>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-4">Ready to Transform Your <span class="text-teal">Workplace Wellbeing</span>?</h2>
             <p class="text-slate-400 text-sm">Join over 35 million people who trust our global EAP services. Get started with a personalized demo.</p>
             <div id="selectedPlan" class="text-teal font-semibold mt-2"></div>
           </div>
@@ -174,7 +174,7 @@ const pageDescription = "Support 35+ Million lives with our professional EAP ser
             </div>
             <input type="email" name="workEmail" placeholder="Work Email" class="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-3.5 text-sm focus:border-teal/50 outline-none transition-all" required />
             <input type="text" name="companyName" placeholder="Company Name" class="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-3.5 text-sm focus:border-teal/50 outline-none transition-all" required />
-            <textarea name="message" placeholder="Tell us about your needs (optional)" rows="4" class="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-3.5 text-sm focus:border-teal/50 outline-none transition-all"></textarea>
+            <textarea name="message" placeholder="Tell us about your needs (optional)" rows="4" class="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-3.5 text-sm focus:border-teal/50 outline-none transition-all resize-y"></textarea>
 
             <button type="submit" class="w-full bg-teal hover:bg-teal-dark text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-teal/10 transition-all hover:scale-[1.02]">
               Request Demo
@@ -196,7 +196,7 @@ const pageDescription = "Support 35+ Million lives with our professional EAP ser
         <span class="text-lg font-bold">Global Team Plans</span>
         <p class="text-slate-500 text-xs">Transforming workplace wellbeing across 180+ countries worldwide</p>
       </div>
-      <div class="flex gap-8 text-xs text-slate-400">
+      <div class="flex flex-wrap justify-center gap-4 sm:gap-8 text-xs text-slate-400">
         <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
         <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
         <a href="mailto:find@gtpinsurance.gr" class="hover:text-white transition-colors">Contact Us</a>
