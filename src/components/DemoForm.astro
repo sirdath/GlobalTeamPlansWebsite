@@ -1,0 +1,221 @@
+---
+
+---
+
+<section id="contact" class="py-24 md:py-32 px-4 relative">
+  <!-- Background subtle overlay -->
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-bg-secondary/50 to-transparent"></div>
+
+  <div class="relative max-w-2xl mx-auto">
+    <div class="glass-card rounded-3xl p-8 md:p-12 relative overflow-hidden">
+      <!-- Decorative glow -->
+      <div class="absolute -top-20 -right-20 w-64 h-64 bg-teal/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-teal/5 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Header -->
+      <div class="text-center mb-10 reveal">
+        <h2 class="text-2xl md:text-4xl font-bold mb-4">
+          Ready to Transform Your <span class="text-teal">Workplace Wellbeing</span>?
+        </h2>
+        <p class="text-gray-400 text-sm md:text-base">
+          Join over 35 million people who trust our global EAP services. Get started with a personalized demo.
+        </p>
+      </div>
+
+      <!-- Selected Plan Display -->
+      <div id="selectedPlanDisplay" class="text-center mb-6 text-teal font-semibold text-lg hidden reveal"></div>
+
+      <!-- Form -->
+      <form id="demoForm" class="space-y-5 reveal" novalidate>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="floating-input">
+            <input type="text" name="firstName" id="firstName" placeholder=" " required autocomplete="given-name" />
+            <label for="firstName">First Name *</label>
+            <div class="form-error hidden text-red-400 text-xs mt-1"></div>
+          </div>
+          <div class="floating-input">
+            <input type="text" name="lastName" id="lastName" placeholder=" " required autocomplete="family-name" />
+            <label for="lastName">Last Name *</label>
+            <div class="form-error hidden text-red-400 text-xs mt-1"></div>
+          </div>
+        </div>
+
+        <div class="floating-input">
+          <input type="email" name="workEmail" id="workEmail" placeholder=" " required autocomplete="email" />
+          <label for="workEmail">Work Email *</label>
+          <div class="form-error hidden text-red-400 text-xs mt-1"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="floating-input">
+            <input type="text" name="companyName" id="companyName" placeholder=" " required autocomplete="organization" />
+            <label for="companyName">Company Name *</label>
+            <div class="form-error hidden text-red-400 text-xs mt-1"></div>
+          </div>
+          <div class="floating-input">
+            <select name="companySize" id="companySize" required>
+              <option value="" disabled selected></option>
+              <option value="1-500">1 - 500 employees</option>
+              <option value="501-2000">501 - 2,000 employees</option>
+              <option value="2001-5000">2,001 - 5,000 employees</option>
+              <option value="5001-10000">5,001 - 10,000 employees</option>
+              <option value="10000+">10,000+ employees</option>
+            </select>
+            <label for="companySize">Company Size *</label>
+            <div class="form-error hidden text-red-400 text-xs mt-1"></div>
+          </div>
+        </div>
+
+        <div class="floating-input">
+          <textarea name="message" id="message" placeholder=" " rows="4"></textarea>
+          <label for="message">Tell us about your needs (optional)</label>
+        </div>
+
+        <button
+          type="submit"
+          id="submitBtn"
+          class="w-full bg-teal hover:bg-teal-dark text-white py-4 rounded-xl text-lg font-semibold glow-effect transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-2"
+        >
+          <span id="submitText">Request Demo</span>
+          <svg id="submitArrow" class="w-5 h-5 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </button>
+      </form>
+
+      <!-- Direct Contact -->
+      <div class="text-center mt-8 pt-8 border-t border-white/5">
+        <p class="text-gray-500 mb-3 text-sm">Prefer to speak directly?</p>
+        <a
+          href="mailto:find@gtpinsurance.gr?subject=EAP Demo Request"
+          class="text-teal hover:text-teal-light font-semibold transition-colors duration-200 text-sm"
+        >
+          Email us at find@gtpinsurance.gr
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('demoForm') as HTMLFormElement;
+
+  // Real-time validation
+  function validateField(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
+    const errorEl = input.parentElement?.querySelector('.form-error') as HTMLElement;
+    if (!errorEl) return true;
+
+    let message = '';
+
+    if (input.required && !input.value.trim()) {
+      message = 'This field is required';
+    } else if (input.type === 'email' && input.value) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(input.value)) {
+        message = 'Please enter a valid email address';
+      }
+    }
+
+    if (message) {
+      errorEl.textContent = message;
+      errorEl.classList.remove('hidden');
+      input.style.borderColor = 'var(--color-error)';
+      return false;
+    } else {
+      errorEl.classList.add('hidden');
+      input.style.borderColor = '';
+      return true;
+    }
+  }
+
+  // Add blur validation to all required fields
+  form.querySelectorAll('input, select, textarea').forEach(field => {
+    field.addEventListener('blur', () => validateField(field as HTMLInputElement));
+    field.addEventListener('input', () => {
+      const errorEl = (field as HTMLElement).parentElement?.querySelector('.form-error') as HTMLElement;
+      if (errorEl && !errorEl.classList.contains('hidden')) {
+        validateField(field as HTMLInputElement);
+      }
+    });
+  });
+
+  // Form submission
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Validate all fields
+    const fields = form.querySelectorAll('input[required], select[required]');
+    let isValid = true;
+    fields.forEach(field => {
+      if (!validateField(field as HTMLInputElement)) isValid = false;
+    });
+
+    if (!isValid) return;
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    const selectedPlan = sessionStorage.getItem('selectedPlan') || '';
+
+    // Build mailto
+    const subject = `EAP Demo Request - ${data.companyName}`;
+    const body = `Hello,
+
+I would like to request a demo of your Employee Assistance Programme services.
+
+Contact Details:
+- Name: ${data.firstName} ${data.lastName}
+- Email: ${data.workEmail}
+- Company: ${data.companyName}
+- Company Size: ${data.companySize}
+${selectedPlan ? `- Selected Plan: ${selectedPlan}` : ''}
+
+${data.message ? `Message: ${data.message}` : ''}
+
+Please contact me to schedule a personalized demo.
+
+Best regards,
+${data.firstName} ${data.lastName}`;
+
+    const mailtoUrl = `mailto:find@gtpinsurance.gr?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Animate button
+    const submitBtn = document.getElementById('submitBtn')!;
+    const submitText = document.getElementById('submitText')!;
+    const submitArrow = document.getElementById('submitArrow')!;
+
+    submitText.textContent = 'Opening email...';
+    submitArrow.style.transform = 'translateX(4px)';
+
+    window.location.href = mailtoUrl;
+
+    setTimeout(() => {
+      submitText.textContent = 'Email client opened!';
+      submitBtn.classList.add('bg-green-600');
+      submitBtn.classList.remove('bg-teal', 'hover:bg-teal-dark');
+
+      setTimeout(() => {
+        form.reset();
+        submitText.textContent = 'Request Demo';
+        submitBtn.classList.remove('bg-green-600');
+        submitBtn.classList.add('bg-teal', 'hover:bg-teal-dark');
+        submitArrow.style.transform = '';
+        const planDisplay = document.getElementById('selectedPlanDisplay');
+        if (planDisplay) {
+          planDisplay.style.display = 'none';
+          planDisplay.textContent = '';
+        }
+        sessionStorage.removeItem('selectedPlan');
+      }, 2000);
+    }, 500);
+  });
+
+  // Show selected plan if coming from pricing
+  const savedPlan = sessionStorage.getItem('selectedPlan');
+  if (savedPlan) {
+    const planDisplay = document.getElementById('selectedPlanDisplay');
+    if (planDisplay) {
+      planDisplay.textContent = `Selected: ${savedPlan}`;
+      planDisplay.style.display = 'block';
+    }
+  }
+</script>

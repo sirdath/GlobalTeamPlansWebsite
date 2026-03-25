@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://globalteamplans.com/sitemap-index.xml
