@@ -45,9 +45,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       rel="stylesheet"
     />
 
-    <!-- frontendmaxxing snippets (world map, paper grain) -->
+    <!-- frontendmaxxing snippets (world map, paper grain, mesh bg) -->
     <link rel="stylesheet" href="/fxm/world-map.css" />
     <link rel="stylesheet" href="/fxm/noise-grain.css" />
+    <link rel="stylesheet" href="/fxm/mesh-bg-stripe.css" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -113,6 +114,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
     <!-- World map (still used in Partnership section) -->
     <script src="/fxm/world-map.js" is:inline></script>
+    <script src="/fxm/mesh-bg-stripe.js" is:inline></script>
 
     <script is:inline>
       (function () {

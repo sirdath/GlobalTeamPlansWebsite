@@ -124,6 +124,68 @@ h4, h5 {
 .eyebrow-green  { color: var(--color-brand-green-dark); }
 .eyebrow-gold   { color: var(--color-brand-gold-dark); }
 
+/* ========================================
+   Section eyebrow — branded label component
+   <SectionEyebrow label="..." accent="blue|green|gold|navy|onNavy" withMark />
+   ======================================== */
+.seye {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.25rem;
+}
+.seye-mark {
+  width: 28px;
+  height: 28px;
+  display: block;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.seye-bars {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 3px;
+  height: 16px;
+}
+.seye-bar {
+  width: 4px;
+  border-radius: 1px;
+  display: inline-block;
+}
+.seye-bar-blue  { background: var(--color-brand-blue); }
+.seye-bar-green { background: var(--color-brand-green); }
+.seye-bar-gold  { background: var(--color-brand-gold); }
+
+.seye-label {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-brand-blue);
+  line-height: 1;
+}
+
+.seye-blue   .seye-label { color: var(--color-brand-blue); }
+.seye-green  .seye-label { color: var(--color-brand-green-dark); }
+.seye-gold   .seye-label { color: var(--color-brand-gold-dark); }
+.seye-navy   .seye-label { color: var(--color-navy); }
+.seye-onNavy .seye-label { color: #FFFFFF; }
+
+/* On navy section, brighten the bars so they read against dark */
+.section-navy .seye-bar-blue,
+.seye-onNavy .seye-bar-blue   { background: var(--color-brand-blue-soft); }
+.section-navy .seye-bar-green,
+.seye-onNavy .seye-bar-green  { background: var(--color-brand-green-soft); }
+.section-navy .seye-bar-gold,
+.seye-onNavy .seye-bar-gold   { background: var(--color-brand-gold-soft); }
+
+/* Larger variant with mark — used for the brand-pitch section */
+.seye-lg .seye-bars  { height: 22px; }
+.seye-lg .seye-bar   { width: 5px; }
+.seye-lg .seye-label { font-size: 14px; }
+.seye-lg .seye-mark  { width: 36px; height: 36px; }
+
 .lede {
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 400;
@@ -183,6 +245,74 @@ h4, h5 {
 .tri-rule .b1 { background: var(--color-brand-blue); }
 .tri-rule .b2 { background: var(--color-brand-green); }
 .tri-rule .b3 { background: var(--color-brand-gold); }
+
+/* ========================================
+   Tri-color section divider — three equal lanes spanning full width,
+   used as a bold brand-rail between major sections.
+   ======================================== */
+.tri-section-divider {
+  display: flex;
+  height: 6px;
+  width: 100%;
+}
+.tri-section-divider > * { flex: 1; }
+.tri-section-divider .l-blue  { background: var(--color-brand-blue); }
+.tri-section-divider .l-green { background: var(--color-brand-green); }
+.tri-section-divider .l-gold  { background: var(--color-brand-gold); }
+
+/* Vertical color stripe used inside section headers for brand presence */
+.section-stripe {
+  display: inline-block;
+  width: 4px;
+  border-radius: 2px;
+  min-height: 60px;
+  align-self: stretch;
+}
+
+/* Top-of-section brand stripe — set --stripe-bg per section.
+   Used as a thin brand-identity bar replacing the plain --color-rule border.
+   ======================================== */
+.section-brand-top {
+  position: relative;
+}
+.section-brand-top::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: var(--stripe-h, 4px);
+  background: var(--stripe-bg, var(--color-brand-blue));
+  z-index: 1;
+}
+
+/* Reusable tri-color gradient value for inline use */
+.stripe-tri {
+  --stripe-bg: linear-gradient(
+    90deg,
+    var(--color-brand-blue)  0%,
+    var(--color-brand-blue)  33.33%,
+    var(--color-brand-green) 33.33%,
+    var(--color-brand-green) 66.66%,
+    var(--color-brand-gold)  66.66%,
+    var(--color-brand-gold)  100%
+  );
+}
+.stripe-blue  { --stripe-bg: var(--color-brand-blue); }
+.stripe-green { --stripe-bg: var(--color-brand-green); }
+.stripe-gold  { --stripe-bg: var(--color-brand-gold); }
+.stripe-navy  { --stripe-bg: var(--color-navy); }
+
+/* ========================================
+   Brand-color text underlines for card titles
+   ======================================== */
+.under-brand {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 6px;
+  text-decoration-skip-ink: none;
+}
+.under-blue  { text-decoration-color: var(--color-brand-blue); }
+.under-green { text-decoration-color: var(--color-brand-green); }
+.under-gold  { text-decoration-color: var(--color-brand-gold); }
 
 .container-prose {
   max-width: 72rem;

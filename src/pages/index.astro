@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
+import SectionEyebrow from '../components/SectionEyebrow.astro';
 import { pricing, pricingNote } from '../data/pricing';
 import {
   // Programme
@@ -32,13 +33,16 @@ const pageDescription = "Global Team Plans helps companies access trusted global
 
 // Programme — what's included
 const programme = [
-  { num: '01', title: '24/7 crisis & critical-incident response', body: 'Immediate phone and video access to qualified counsellors for safety events, workplace incidents, bereavement, and disaster response. Available in 50+ languages, in-country routing where it matters.', visual: 'crisis' },
-  { num: '02', title: 'Structured counselling', body: 'Short-term modalities — 1:1 in-person, video, or telephonic — for what actually shows up in a workforce: anxiety, low mood, sleep, substance use, relationship strain. Sessions tracked, outcomes measured.', visual: 'counselling' },
-  { num: '03', title: 'Digital wellbeing platform', body: 'Consumer-grade app: self-guided CBT programmes, an assessed content library, and the Total Wellbeing Index that points members to the right support before they need crisis care.', visual: 'digital' },
-  { num: '04', title: 'WorkLife services', body: 'Legal consultations, financial planning, childcare and eldercare navigation, and nutritional coaching. The part of an EAP that quietly removes more friction than counselling alone.', visual: 'worklife' },
-  { num: '05', title: 'OurHealth peer community', body: 'Anonymous peer-to-peer forum, professionally moderated, available in 30+ languages. A first step for members who are not yet ready to talk to a clinician.', visual: 'community' },
-  { num: '06', title: 'HR analytics & utilisation dashboard', body: 'Aggregate, anonymised reporting for HR: utilisation, modality mix, presenting issues, and demographic trends. Quarterly business reviews with named account management.', visual: 'analytics' },
+  { num: '01', title: '24/7 crisis & critical-incident response', body: 'Immediate phone and video access to qualified counsellors for safety events, workplace incidents, bereavement, and disaster response. Available in 50+ languages, in-country routing where it matters.', visual: 'crisis',      key: 'Answer ≤ 60s · 50+ languages · in-country routing' },
+  { num: '02', title: 'Structured counselling',                  body: 'Short-term modalities — 1:1 in-person, video, or telephonic — for what actually shows up in a workforce: anxiety, low mood, sleep, substance use, relationship strain. Sessions tracked, outcomes measured.', visual: 'counselling', key: '5 sessions / member / year · PHQ-9 + GAD-7 outcomes' },
+  { num: '03', title: 'Digital wellbeing platform',              body: 'Consumer-grade app: self-guided CBT programmes, an assessed content library, and the Total Wellbeing Index that points members to the right support before they need crisis care.', visual: 'digital',     key: 'iOS · Android · Web · self-guided CBT' },
+  { num: '04', title: 'WorkLife services',                       body: 'Legal consultations, financial planning, childcare and eldercare navigation, and nutritional coaching. The part of an EAP that quietly removes more friction than counselling alone.', visual: 'worklife',    key: 'Legal · Financial · Care · same-week booking' },
+  { num: '05', title: 'OurHealth peer community',                body: 'Anonymous peer-to-peer forum, professionally moderated, available in 30+ languages. A first step for members who are not yet ready to talk to a clinician.', visual: 'community',   key: '30+ languages · pro-moderated 24/7' },
+  { num: '06', title: 'HR analytics & utilisation dashboard',    body: 'Aggregate, anonymised reporting for HR: utilisation, modality mix, presenting issues, and demographic trends. Quarterly business reviews with named account management.', visual: 'analytics',   key: 'Monthly + quarterly reviews · named account team' },
 ];
+
+// Brand-color rotation across the 6 programme cards: blue · green · gold · blue · green · gold
+const programmeAccents = ['blue', 'green', 'gold', 'blue', 'green', 'gold'];
 
 const whoWeHelp = [
   {
@@ -99,10 +103,10 @@ const sources = [
     <!-- ============================================================
          WHO WE HELP — three audience cards (blue / green / gold)
          ============================================================ -->
-    <section id="audience" class="section section-soft border-t border-[var(--color-rule)]">
+    <section id="audience" class="section section-soft section-brand-top stripe-tri">
       <div class="container-prose">
         <div class="max-w-2xl mb-14" data-reveal="up">
-          <div class="eyebrow eyebrow-mute mb-5">Who we help</div>
+          <SectionEyebrow label="Who we help" accent="blue" />
           <h2 data-split class="text-[clamp(1.9rem,3.3vw,2.75rem)] leading-[1.1] tracking-[-0.02em]">
             Built for the people who actually <span class="accent-hl">buy and run</span> EAP programmes.
           </h2>
@@ -114,10 +118,11 @@ const sources = [
             const accentClass = `accent-top-${a.accent}`;
             const iconClass   = `icon-square icon-square-${a.accent}`;
             const isClass     = `is-${a.accent}`;
+            const underClass  = `under-brand under-${a.accent}`;
             return (
               <div class={`card-soft ${isClass} ${accentClass}`} data-tilt data-tilt-max="5">
                 <span class={iconClass}><Ico size={22} strokeWidth={1.75} /></span>
-                <h3 class="mt-5 text-[1.25rem] tracking-tight">{a.title}</h3>
+                <h3 class={`mt-5 text-[1.25rem] tracking-tight inline-block ${underClass}`}>{a.title}</h3>
                 <p class="mt-3 text-[15px] leading-relaxed text-[var(--color-ink-soft)]">{a.body}</p>
               </div>
             );
@@ -129,11 +134,11 @@ const sources = [
     <!-- ============================================================
          PARTNERSHIP — agency story + dotted world map
          ============================================================ -->
-    <section id="partnership" class="section section-white border-t border-[var(--color-rule)]">
+    <section id="partnership" class="section section-white section-brand-top stripe-blue">
       <div class="container-prose grid md:grid-cols-12 gap-x-12 gap-y-14">
 
         <div class="md:col-span-5 md:sticky md:top-32 self-start" data-reveal="up">
-          <div class="eyebrow eyebrow-blue mb-5">About this partnership</div>
+          <SectionEyebrow label="About this partnership" accent="blue" />
           <h2 data-split class="text-[clamp(2rem,3.5vw,3.25rem)] leading-[1.05] tracking-[-0.02em]">
             We sell <span class="accent-hl-green">TELUS&nbsp;Health</span>. We don't pretend we're them.
           </h2>
@@ -196,10 +201,10 @@ const sources = [
     <!-- ============================================================
          PROGRAMME — 6-card grid with hover-tilt
          ============================================================ -->
-    <section id="programme" class="section section-soft border-t border-[var(--color-rule)]">
+    <section id="programme" class="section section-soft section-brand-top stripe-green">
       <div class="container-prose">
         <div class="max-w-2xl mb-14">
-          <div class="eyebrow eyebrow-green mb-5" data-reveal="up">The programme</div>
+          <SectionEyebrow label="The programme" accent="green" />
           <h2 data-split class="text-[clamp(2rem,3.5vw,3.25rem)] leading-[1.05] tracking-[-0.02em]">
             What's actually <span class="accent-hl-green">in the box</span>.
           </h2>
@@ -209,28 +214,51 @@ const sources = [
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" data-reveal-stagger>
-          {programme.map(item => {
-            const Icon = programmeIcons[item.visual];
+          {programme.map((item, i) => {
+            const Icon   = programmeIcons[item.visual];
+            const accent = programmeAccents[i];
+            const isClass     = `is-${accent}`;
+            const accentClass = `accent-top-${accent}`;
+            const iconClass   = `icon-square icon-square-${accent}`;
+            const numClass    = accent === 'blue'  ? 'text-[var(--color-brand-blue)]'
+                              : accent === 'green' ? 'text-[var(--color-brand-green-dark)]'
+                              :                      'text-[var(--color-brand-gold-dark)]';
+            const underClass  = `under-brand under-${accent}`;
             return (
               <article
-                class="card-soft is-green flex flex-col h-full"
+                class={`card-soft ${isClass} ${accentClass} flex flex-col h-full relative overflow-hidden`}
                 data-tilt
                 data-tilt-max="4"
                 style="padding: 1.85rem;"
               >
-                <div class="flex items-center justify-between mb-5">
-                  <span class="icon-square icon-square-green">
-                    <Icon size={22} strokeWidth={1.75} />
-                  </span>
-                  <span class="font-mono text-[11px] tracking-widest text-[var(--color-ink-mute)]" style="font-family: ui-monospace, 'SF Mono', Menlo, monospace;">
-                    {item.num}
-                  </span>
-                </div>
-                <h3 class="text-[1.2rem] leading-[1.25] tracking-tight">{item.title}</h3>
-                <p class="mt-3 text-[14.5px] leading-[1.6] text-[var(--color-ink-soft)] flex-grow">{item.body}</p>
-                <div class="mt-6 pt-5 border-t border-[var(--color-rule)] flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-[var(--color-ink-mute)]">
-                  <span class="block w-4 h-px bg-[var(--color-brand-green)]"></span>
-                  <span>Service line</span>
+                <!-- Big editorial numeral, top right -->
+                <span
+                  aria-hidden
+                  class={`absolute top-3 right-5 font-bold tracking-tight pointer-events-none ${numClass}`}
+                  style="font-size: 3.25rem; line-height: 1; opacity: 0.18;"
+                >
+                  {item.num}
+                </span>
+
+                <!-- Icon -->
+                <span class={iconClass}>
+                  <Icon size={22} strokeWidth={1.75} />
+                </span>
+
+                <!-- Title with brand underline -->
+                <h3 class={`mt-5 text-[1.2rem] leading-[1.25] tracking-tight inline-block self-start ${underClass}`}>
+                  {item.title}
+                </h3>
+
+                <!-- Body -->
+                <p class="mt-3 text-[14.5px] leading-[1.55] text-[var(--color-ink-soft)] flex-grow">
+                  {item.body}
+                </p>
+
+                <!-- Key fact strip -->
+                <div class="mt-6 pt-4 border-t border-[var(--color-rule)] flex items-start gap-2 text-[12px] leading-snug text-[var(--color-ink-mute)]">
+                  <span class={`block w-3 h-[2px] mt-[7px] rounded-sm`} style={`background: var(--color-brand-${accent === 'gold' ? 'gold' : accent});`}></span>
+                  <span>{item.key}</span>
                 </div>
               </article>
             );
@@ -245,27 +273,51 @@ const sources = [
     <section id="why" class="section section-navy">
       <div class="container-prose">
         <div class="max-w-2xl mb-14" data-reveal="up">
-          <div class="eyebrow mb-5">Why Global Team Plans</div>
+          <SectionEyebrow label="Why Global Team Plans" accent="onNavy" withMark={true} class="seye-lg" />
           <h2 data-split class="text-[clamp(2rem,3.5vw,3.25rem)] leading-[1.05] tracking-[-0.02em]">
             A calm, trustworthy partner — for people who take wellbeing seriously.
           </h2>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-10 md:gap-12" data-reveal-stagger>
+        <div class="grid md:grid-cols-3 gap-6" data-reveal-stagger>
           {whyGtp.map((p, i) => {
             const Ico = p.icon;
-            const barColor =
-              p.bar === 'blue'  ? 'var(--color-brand-blue-soft)' :
-              p.bar === 'green' ? 'var(--color-brand-green)' :
-              'var(--color-brand-gold)';
+            // Per-pillar palette: fill, border, icon-bg, icon-color, rail
+            const theme = p.bar === 'blue' ? {
+              fill:    '#0E4F70',
+              border:  '1px solid rgba(79, 162, 201, 0.55)',
+              iconBg:  'rgba(255, 255, 255, 0.12)',
+              iconCol: '#9DD3EA',
+              rail:    'var(--color-brand-blue-soft)',
+            } : p.bar === 'green' ? {
+              fill:    '#1E6B3A',
+              border:  '1px solid rgba(102, 197, 134, 0.55)',
+              iconBg:  'rgba(255, 255, 255, 0.12)',
+              iconCol: '#BFE7CD',
+              rail:    'var(--color-brand-green)',
+            } : {
+              fill:    '#7A5A0F',
+              border:  '1px solid rgba(242, 197, 71, 0.55)',
+              iconBg:  'rgba(255, 255, 255, 0.12)',
+              iconCol: '#FAE4A1',
+              rail:    'var(--color-brand-gold)',
+            };
             return (
-              <div>
-                <span class="icon-square icon-square-on-navy">
-                  <Ico size={22} strokeWidth={1.75} />
+              <div
+                class="why-card relative rounded-2xl p-7 md:p-8 h-full flex flex-col"
+                data-tilt
+                data-tilt-max="3"
+                style={`background: ${theme.fill}; border: ${theme.border}; box-shadow: 0 20px 44px -22px rgba(0,0,0,0.55);`}
+              >
+                <span
+                  class="inline-flex items-center justify-center w-12 h-12 rounded-xl"
+                  style={`background: ${theme.iconBg}; color: ${theme.iconCol}; border: 1px solid rgba(255,255,255,0.18);`}
+                >
+                  <Ico size={24} strokeWidth={1.75} />
                 </span>
-                <div class="mt-6 h-[3px] w-12 rounded-sm" style={`background: ${barColor};`}></div>
+                <div class="mt-6 h-[3px] w-12 rounded-sm" style={`background: ${theme.rail};`}></div>
                 <h3 class="mt-5 text-[1.35rem] tracking-tight" style="color: #FFFFFF;">{p.title}</h3>
-                <p class="mt-3 text-[15px] leading-relaxed" style="color: rgba(245,248,250,0.75);">{p.body}</p>
+                <p class="mt-3 text-[15px] leading-relaxed" style="color: rgba(245,248,250,0.85);">{p.body}</p>
               </div>
             );
           })}
@@ -282,10 +334,10 @@ const sources = [
     <!-- ============================================================
          EVIDENCE — ROI numbers with citations
          ============================================================ -->
-    <section id="evidence" class="section section-white border-t border-[var(--color-rule)]">
+    <section id="evidence" class="section section-white section-brand-top stripe-gold">
       <div class="container-prose">
         <div class="max-w-2xl mb-16" data-reveal="up">
-          <div class="eyebrow eyebrow-gold mb-5">Evidence</div>
+          <SectionEyebrow label="Evidence" accent="gold" />
           <h2 data-split class="text-[clamp(2rem,3.5vw,3.25rem)] leading-[1.05] tracking-[-0.02em]">
             What the data actually <span class="accent-hl">shows</span>.
           </h2>
@@ -335,10 +387,10 @@ const sources = [
     <!-- ============================================================
          GOVERNANCE — A1..A4 compliance cards
          ============================================================ -->
-    <section id="governance" class="section section-soft border-t border-[var(--color-rule)]">
+    <section id="governance" class="section section-soft section-brand-top stripe-blue">
       <div class="container-prose">
         <div class="max-w-2xl mb-14" data-reveal="up">
-          <div class="eyebrow eyebrow-mute mb-5">Governance & compliance</div>
+          <SectionEyebrow label="Governance & compliance" accent="navy" />
           <h2 data-split class="text-[clamp(2rem,3.5vw,3.25rem)] leading-[1.05] tracking-[-0.02em]">
             What your procurement, legal, and IT teams will actually <span class="accent-hl">ask about</span>.
           </h2>
@@ -395,11 +447,11 @@ const sources = [
     <!-- ============================================================
          PRICING
          ============================================================ -->
-    <section id="pricing" class="section section-white border-t border-[var(--color-rule)]">
+    <section id="pricing" class="section section-white section-brand-top stripe-green">
       <div class="container-prose">
         <div class="grid md:grid-cols-12 gap-x-12 gap-y-10 mb-14">
           <div class="md:col-span-5" data-reveal="up">
-            <div class="eyebrow eyebrow-blue mb-5">Pricing</div>
+            <SectionEyebrow label="Pricing" accent="blue" />
             <h2 data-split class="text-[clamp(2rem,3.5vw,3.25rem)] leading-[1.05] tracking-[-0.02em]">
               Per employee, per year. <span class="accent-hl-green">No surprises.</span>
             </h2>
@@ -455,11 +507,11 @@ const sources = [
     <!-- ============================================================
          CONTACT — Book a consultation
          ============================================================ -->
-    <section id="contact" class="section section-soft border-t border-[var(--color-rule)]">
+    <section id="contact" class="section section-soft section-brand-top stripe-tri">
       <div class="container-prose grid md:grid-cols-12 gap-x-12 gap-y-12">
 
         <div class="md:col-span-5" data-reveal="up">
-          <div class="eyebrow eyebrow-blue mb-5">Book a consultation</div>
+          <SectionEyebrow label="Book a consultation" accent="blue" />
           <h2 data-split class="text-[clamp(2rem,3.5vw,3rem)] leading-[1.05] tracking-[-0.02em]">
             Tell us where your people are. We'll come back with a proposal.
           </h2>
@@ -557,7 +609,7 @@ const sources = [
     <!-- ============================================================
          FOOTNOTES
          ============================================================ -->
-    <section id="footnotes" class="py-16 border-t border-[var(--color-rule)] bg-white">
+    <section id="footnotes" class="py-16 section-brand-top stripe-gold bg-white">
       <div class="container-prose">
         <div class="eyebrow eyebrow-mute mb-6">Footnotes & sources</div>
         <ol class="grid md:grid-cols-3 gap-x-10 gap-y-8 list-none">
@@ -576,11 +628,11 @@ const sources = [
   <!-- ============================================================
        FOOTER
        ============================================================ -->
-  <footer class="border-t border-[var(--color-rule)] py-14 bg-[var(--color-surface-soft)]">
+  <footer class="section-brand-top stripe-tri py-14 bg-[var(--color-surface-soft)]" style="--stripe-h: 6px;">
     <div class="container-prose">
       <div class="grid md:grid-cols-12 gap-x-12 gap-y-10">
         <div class="md:col-span-5">
-          <img src="/logo.png" alt="Global Team Plans" width="220" height="50" class="h-10 w-auto mb-5" />
+          <img src="/logo.png" alt="Global Team Plans" width="320" height="26" class="h-5 md:h-7 w-auto mb-4" />
           <p class="text-[14px] leading-relaxed max-w-md text-[var(--color-ink-soft)]">
             Certified TELUS&nbsp;Health partner agency. Global employee wellbeing plans for organisations that operate across borders.
           </p>

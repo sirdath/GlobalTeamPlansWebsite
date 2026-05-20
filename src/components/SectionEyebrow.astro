@@ -1,0 +1,24 @@
+---
+// Branded section eyebrow — replaces plain text labels with a
+// tri-color brand-bar + larger label. Optional GTP favicon mark.
+interface Props {
+  label: string;
+  accent?: 'blue' | 'green' | 'gold' | 'navy' | 'onNavy';
+  withMark?: boolean;
+  class?: string;
+}
+const { label, accent = 'blue', withMark = false, class: extraClass = '' } = Astro.props;
+const accentClass = `seye-${accent}`;
+---
+
+<div class={`seye ${accentClass} ${extraClass}`}>
+  {withMark && (
+    <img src="/favicon.png" alt="" class="seye-mark" width="36" height="36" loading="lazy" />
+  )}
+  <span class="seye-bars" aria-hidden>
+    <span class="seye-bar seye-bar-blue"></span>
+    <span class="seye-bar seye-bar-green"></span>
+    <span class="seye-bar seye-bar-gold"></span>
+  </span>
+  <span class="seye-label">{label}</span>
+</div>
