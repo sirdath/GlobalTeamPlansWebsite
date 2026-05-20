@@ -1,79 +1,127 @@
 ---
-import { heroStats } from '../data/stats';
-import GlobeScene from './3d/GlobeScene';
+// Hero — premium corporate wellbeing direction, GSAP load timeline
 ---
 
-<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-  <!-- 3D Globe Background -->
-  <div class="absolute inset-0 z-0 opacity-40 md:opacity-100 pointer-events-none" id="heroBackground">
-    <GlobeScene client:only="react" className="h-full w-full pointer-events-none" />
-  </div>
+<section id="hero" class="relative pt-32 md:pt-40 pb-20 md:pb-28 bg-white overflow-hidden">
 
-  <!-- Content -->
-  <div class="relative z-10 max-w-6xl mx-auto px-4 text-center" id="main-content">
-    <div class="mb-6 reveal">
-      <span class="inline-block px-4 py-1.5 rounded-full border border-teal/20 bg-teal/5 text-teal text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
-        Global EAP Solutions • 180+ Countries
-      </span>
-      <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8 leading-[1.1]" id="heroTitle">
-        The World's Most Trusted <br />
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal via-emerald-400 to-teal">Global EAP Provider</span>
-      </h1>
+  <!-- Mouse-follow brand glow accents (subtle, GSAP-tracked) -->
+  <div id="heroGlowA" aria-hidden class="absolute -top-32 -left-20 w-[520px] h-[520px] rounded-full pointer-events-none will-change-transform" style="background: radial-gradient(circle, rgba(0,94,130,0.08), transparent 70%);"></div>
+  <div id="heroGlowB" aria-hidden class="absolute -bottom-32 -right-20 w-[460px] h-[460px] rounded-full pointer-events-none will-change-transform" style="background: radial-gradient(circle, rgba(47,174,98,0.07), transparent 70%);"></div>
+
+  <div class="container-prose relative" id="main-content">
+
+    <!-- Partner mark -->
+    <div class="flex flex-wrap items-center gap-3 mb-8" id="heroPartner">
+      <span class="tag-green">Certified Partner Agency</span>
+      <span class="text-[11px] uppercase tracking-[0.18em] text-[var(--color-ink-mute)]">In partnership with</span>
+      <span class="text-[15px] tracking-tight font-semibold" style="color: var(--color-brand-blue);">TELUS&nbsp;Health</span>
     </div>
 
-    <p class="text-slate-400 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed mb-10 reveal" id="heroSubtitle">
-      Empowering 35M+ lives with professional, clinically-governed 24/7 support. 
-      Where human care meets enterprise scale.
+    <!-- Headline (SplitText words) -->
+    <h1
+      id="heroHeadline"
+      data-split
+      class="text-[clamp(2.5rem,6.2vw,5.25rem)] leading-[1.02] tracking-[-0.025em] max-w-4xl font-extrabold"
+    >
+      Global employee wellbeing,
+      <span class="accent-hl">made simple</span>.
+    </h1>
+
+    <!-- Lede -->
+    <p id="heroLede" class="lede mt-7 max-w-2xl">
+      Global Team Plans helps companies access trusted global health, wellbeing, and EAP programmes for their teams — delivered as a certified TELUS&nbsp;Health partner agency, from one contract, across more than 180&nbsp;countries.
     </p>
 
-    <!-- Stats Grid -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-10 max-w-4xl mx-auto" id="heroStats">
-      {heroStats.map(stat => (
-        <div class="glass-card p-4 md:p-5 rounded-2xl cursor-glow reveal border-white/[0.03]">
-          <div
-            class="text-xl md:text-3xl font-bold text-teal mb-0.5 stat-number"
-            data-value={stat.numericValue}
-            data-suffix={stat.suffix}
-          >
-            {stat.value}
-          </div>
-          <div class="text-slate-400 text-[10px] md:text-xs font-medium uppercase tracking-wider">{stat.label}</div>
-        </div>
-      ))}
-    </div>
-
     <!-- CTAs -->
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 reveal" id="heroCtas">
-      <a
-        href="#contact"
-        class="bg-teal hover:bg-teal-dark active:bg-teal-dark text-white px-7 py-3.5 rounded-xl text-base font-semibold transition-all duration-300 sm:hover:scale-105 active:scale-95 shadow-lg shadow-teal/10"
-      >
-        Request Demo
+    <div id="heroCtas" class="mt-10 flex flex-wrap items-center gap-4">
+      <a href="#contact" class="btn-primary">
+        Book a consultation
+        <span aria-hidden class="btn-arrow inline-block">→</span>
       </a>
-      <a
-        href="#services"
-        class="bg-white/5 border border-white/10 hover:border-teal/50 text-white px-7 py-3.5 rounded-xl text-base font-semibold transition-all duration-300 hover:bg-white/10"
-      >
-        Learn More
+      <a href="#programme" class="btn-text">
+        See what's included
+        <span aria-hidden class="btn-arrow inline-block">→</span>
       </a>
     </div>
-  </div>
 
-  <!-- Scroll Indicator -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 scroll-indicator" id="scrollIndicator">
-    <a href="#services" class="flex flex-col items-center gap-2 text-gray-400 hover:text-teal transition-colors">
-      <span class="text-[10px] font-bold tracking-[0.3em] uppercase opacity-50">Scroll</span>
-      <svg class="w-5 h-5 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-      </svg>
-    </a>
+    <!-- Quiet facts row -->
+    <div id="heroStats" data-reveal-stagger class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-y-10 md:gap-x-10 border-t border-[var(--color-rule)] pt-10 max-w-5xl">
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <span class="block w-6 h-[3px] rounded-sm" style="background: var(--color-brand-blue);"></span>
+          <span class="eyebrow eyebrow-mute">Countries</span>
+        </div>
+        <div class="text-[2.25rem] leading-none tracking-tight font-bold text-[var(--color-navy)]" data-count-up="180" data-count-suffix="+">180+</div>
+      </div>
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <span class="block w-6 h-[3px] rounded-sm" style="background: var(--color-brand-green);"></span>
+          <span class="eyebrow eyebrow-mute">Lives supported<sup class="fn-ref"><a href="#footnotes">1</a></sup></span>
+        </div>
+        <div class="text-[2.25rem] leading-none tracking-tight font-bold text-[var(--color-navy)]" data-count-up="35" data-count-suffix="M+">35M+</div>
+      </div>
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <span class="block w-6 h-[3px] rounded-sm" style="background: var(--color-brand-gold);"></span>
+          <span class="eyebrow eyebrow-mute">Languages</span>
+        </div>
+        <div class="text-[2.25rem] leading-none tracking-tight font-bold text-[var(--color-navy)]" data-count-up="50" data-count-suffix="+">50+</div>
+      </div>
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <span class="block w-6 h-[3px] rounded-sm" style="background: var(--color-navy);"></span>
+          <span class="eyebrow eyebrow-mute">Availability</span>
+        </div>
+        <div class="text-[2.25rem] leading-none tracking-tight font-bold text-[var(--color-navy)]">24 / 7</div>
+      </div>
+    </div>
+
+    <p id="heroSourcesNote" data-reveal data-reveal-delay="0.1" class="mt-6 text-[12px] text-[var(--color-ink-mute)] max-w-2xl">
+      Figures reflect the TELUS&nbsp;Health EAP delivery footprint that we resell. Sources at the foot of this page.
+    </p>
   </div>
 </section>
 
 <style>
-  .text-gradient {
-    background: linear-gradient(to bottom, #ffffff, #94a3b8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+  .btn-arrow { transition: transform 0.25s cubic-bezier(.2,.9,.25,1); }
+  .btn-primary:hover .btn-arrow,
+  .btn-secondary:hover .btn-arrow,
+  .btn-text:hover .btn-arrow { transform: translateX(4px); }
 </style>
+
+<script is:inline>
+  (function () {
+    function start() {
+      if (!window.gsap) return setTimeout(start, 40);
+      var gsap = window.gsap;
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Hero load timeline
+      var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      gsap.set(['#heroPartner', '#heroLede', '#heroCtas'], { opacity: 0, y: 18 });
+
+      tl.to('#heroPartner', { opacity: 1, y: 0, duration: 0.7 }, 0.1)
+        .to('#heroLede',    { opacity: 1, y: 0, duration: 0.7 }, 0.45)
+        .to('#heroCtas',    { opacity: 1, y: 0, duration: 0.7 }, 0.6);
+
+      // Parallax glow tracking (skip on touch / reduced motion)
+      if (!reduced && window.matchMedia('(pointer: fine)').matches) {
+        var glowA = document.getElementById('heroGlowA');
+        var glowB = document.getElementById('heroGlowB');
+        var qAx = gsap.quickTo(glowA, 'x', { duration: 0.8, ease: 'power2.out' });
+        var qAy = gsap.quickTo(glowA, 'y', { duration: 0.8, ease: 'power2.out' });
+        var qBx = gsap.quickTo(glowB, 'x', { duration: 1.1, ease: 'power2.out' });
+        var qBy = gsap.quickTo(glowB, 'y', { duration: 1.1, ease: 'power2.out' });
+        document.getElementById('hero').addEventListener('pointermove', function (e) {
+          var w = window.innerWidth, h = window.innerHeight;
+          var px = (e.clientX / w - 0.5) * 60;
+          var py = (e.clientY / h - 0.5) * 40;
+          qAx(px);  qAy(py);
+          qBx(-px); qBy(-py);
+        });
+      }
+    }
+    if (document.readyState !== 'loading') start();
+    else document.addEventListener('DOMContentLoaded', start);
+  })();
+</script>

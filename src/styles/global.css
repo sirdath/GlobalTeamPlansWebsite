@@ -1,330 +1,464 @@
 @import 'tailwindcss';
 
 /* ========================================
-   Tailwind v4 Theme Extension
+   GTP — Premium corporate wellbeing palette
+   60% white / 25% navy-blue / 10% green / 5% gold
    ======================================== */
 @theme {
-  --color-teal: #0d9488; /* Sophisticated Teal 600 */
-  --color-teal-light: #2dd4bf; /* Teal 400 */
-  --color-teal-dark: #0f766e; /* Teal 700 */
-  --color-brand-bg: #020617; /* Slate 950 - deeper than before */
-  --color-brand-bg-secondary: #0f172a; /* Slate 900 */
-  --color-brand-bg-tertiary: #1e293b; /* Slate 800 */
+  /* Surfaces */
+  --color-surface:        #FFFFFF;
+  --color-surface-soft:   #F7FAFB;   /* pale blue-grey section bg */
+  --color-surface-sunken: #EEF3F6;   /* deeper soft for muted cards */
+  --color-rule:           #E5EBEF;   /* light border grey */
+
+  /* Text */
+  --color-navy:        #12324A;
+  --color-charcoal:    #2B2F33;
+  --color-ink:         #12324A;
+  --color-ink-soft:    #2B2F33;
+  --color-ink-mute:    #5A6B7A;
+  --color-ink-faint:   #94A3B0;
+
+  /* Brand — premium versions of logo colors */
+  --color-brand-blue:        #005E82;
+  --color-brand-blue-dark:   #00496A;
+  --color-brand-blue-soft:   #338BAE;
+  --color-brand-blue-pale:   rgba(0, 94, 130, 0.08);
+
+  --color-brand-green:       #2FAE62;
+  --color-brand-green-dark:  #208E4D;
+  --color-brand-green-soft:  #66C586;
+  --color-brand-green-pale:  rgba(47, 174, 98, 0.10);
+
+  --color-brand-gold:        #E6A900;
+  --color-brand-gold-dark:   #B98800;
+  --color-brand-gold-soft:   #F2C547;
+  --color-brand-gold-pale:   rgba(230, 169, 0, 0.12);
+
+  /* Semantic */
+  --color-accent:        #005E82;
+  --color-accent-hover:  #00496A;
+
+  /* Backwards-compat aliases */
+  --color-paper:         #FFFFFF;
+  --color-paper-deep:    #F7FAFB;
+  --color-teal:          #005E82;
+  --color-teal-light:    #338BAE;
+  --color-teal-dark:     #00496A;
+  --color-telus:         #005E82;
+  --color-brand-amber:       #E6A900;
+  --color-brand-amber-dark:  #B98800;
+
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 /* ========================================
-   CSS Custom Properties (non-Tailwind)
-   ======================================== */
-:root {
-  --color-primary: #0d9488;
-  --color-primary-light: #2dd4bf;
-  --color-primary-dark: #0f766e;
-  --color-text-primary: #f8fafc; /* Slate 50 */
-  --color-text-secondary: #e2e8f0; /* Slate 200 */
-  --color-text-muted: #94a3b8; /* Slate 400 */
-  --color-success: #10b981;
-  --color-error: #ef4444;
-  --glass-bg: rgba(15, 23, 42, 0.6); /* Slate 900 with lower opacity */
-  --glass-border: rgba(255, 255, 255, 0.05);
-  --glass-shadow: rgba(0, 0, 0, 0.4);
-}
-
-/* ========================================
-   Base Styles
+   Base
    ======================================== */
 html {
   scroll-behavior: smooth;
+  background-color: #FFFFFF;
 }
 
 body {
-  background-color: #020617;
-  color: #f8fafc;
-  overflow-x: hidden;
+  background-color: #FFFFFF;
+  color: var(--color-navy);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  font-feature-settings: "cv11", "ss01", "ss02";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: 
-    radial-gradient(circle at 50% -20%, rgba(13, 148, 136, 0.12), transparent 50%);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-brand-blue);
+  color: #FFFFFF;
 }
 
 /* ========================================
-   Glassmorphism
+   Typography — modern humanist sans-serif throughout
    ======================================== */
-.glass-card {
-  background: rgba(15, 23, 42, 0.4);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s ease;
+h1, h2, h3, h4, h5, h6,
+.font-serif {            /* keep class hook but it now renders sans */
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--color-navy);
+  font-feature-settings: "cv11", "ss01", "ss02";
 }
 
-.glass-card:hover {
-  transform: translateY(-8px) scale(1.01);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  border-color: rgba(13, 148, 136, 0.3);
+h1 {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
 }
+h2 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+h3 {
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  line-height: 1.2;
+}
+h4, h5 {
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+}
+
+.eyebrow {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-brand-blue);
+}
+
+.eyebrow-mute   { color: var(--color-ink-mute); }
+.eyebrow-blue   { color: var(--color-brand-blue); }
+.eyebrow-green  { color: var(--color-brand-green-dark); }
+.eyebrow-gold   { color: var(--color-brand-gold-dark); }
+
+.lede {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: clamp(1.0625rem, 0.95rem + 0.55vw, 1.25rem);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+}
+
+/* Emphasis = gold highlighter behind the word (replaces italic accents) */
+.accent-hl {
+  background: linear-gradient(transparent 62%, rgba(230, 169, 0, 0.35) 62%);
+  padding: 0 0.06em;
+  border-radius: 1px;
+}
+.accent-hl-green {
+  background: linear-gradient(transparent 62%, rgba(47, 174, 98, 0.30) 62%);
+  padding: 0 0.06em;
+  border-radius: 1px;
+}
+.accent-hl-blue {
+  background: linear-gradient(transparent 62%, rgba(0, 94, 130, 0.18) 62%);
+  padding: 0 0.06em;
+  border-radius: 1px;
+}
+
+/* Old italic-accent classes — now render as gold highlighter */
+.accent-italic,
+.accent-italic-green,
+.accent-italic-amber,
+.accent-italic-blue {
+  font-style: normal;
+  background: linear-gradient(transparent 62%, rgba(230, 169, 0, 0.35) 62%);
+  padding: 0 0.06em;
+  border-radius: 1px;
+  color: inherit;
+}
+.accent-italic-green { background: linear-gradient(transparent 62%, rgba(47, 174, 98, 0.30) 62%); }
+.accent-italic-blue  { background: linear-gradient(transparent 62%, rgba(0, 94, 130, 0.18) 62%); }
 
 /* ========================================
-   Glow Effects
+   Layout primitives
    ======================================== */
-.glow-effect {
-  box-shadow: 0 0 30px rgba(0, 188, 212, 0.4);
+.rule {
+  border: 0;
+  border-top: 1px solid var(--color-rule);
+  margin: 0;
 }
 
-.glow-effect:hover {
-  box-shadow: 0 0 50px rgba(0, 188, 212, 0.6);
-}
-
-/* ========================================
-   Text Gradient
-   ======================================== */
-.text-gradient {
-  background: linear-gradient(135deg, #ffffff 0%, var(--color-primary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ========================================
-   Animated Gradient Border
-   ======================================== */
-.gradient-border {
-  position: relative;
-  overflow: hidden;
-}
-
-.gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
-  background: conic-gradient(
-    from var(--border-angle, 0deg),
-    transparent 25%,
-    var(--color-primary) 50%,
-    transparent 75%
-  );
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: xor;
-  animation: rotateBorder 4s linear infinite;
-}
-
-@keyframes rotateBorder {
-  to { --border-angle: 360deg; }
-}
-
-@property --border-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
-/* ========================================
-   Scroll Progress Bar
-   ======================================== */
-.scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+.tri-rule {
+  display: inline-flex;
   height: 3px;
-  background: linear-gradient(90deg, var(--color-primary-dark), var(--color-primary), var(--color-primary-light));
-  transform-origin: left;
-  transform: scaleX(0);
-  z-index: 9999;
-  transition: transform 0.1s linear;
+  border-radius: 1px;
+  overflow: hidden;
+  width: 64px;
+}
+.tri-rule > * { flex: 1; }
+.tri-rule .b1 { background: var(--color-brand-blue); }
+.tri-rule .b2 { background: var(--color-brand-green); }
+.tri-rule .b3 { background: var(--color-brand-gold); }
+
+.container-prose {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container-prose { padding-inline: 2.5rem; }
+}
+
+.section { padding-block: clamp(4.5rem, 8vw, 7rem); }
+.section-soft   { background: var(--color-surface-soft); }
+.section-white  { background: #FFFFFF; }
+.section-navy   { background: var(--color-navy); color: #F5F8FA; }
+.section-navy h1,
+.section-navy h2,
+.section-navy h3,
+.section-navy h4 { color: #FFFFFF; }
+.section-navy .eyebrow { color: var(--color-brand-gold-soft); }
+.section-navy .lede    { color: rgba(245, 248, 250, 0.75); }
+
+/* ========================================
+   Links
+   ======================================== */
+a.link-underline {
+  position: relative;
+  color: var(--color-brand-blue);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+a.link-underline:hover {
+  color: var(--color-brand-blue-dark);
 }
 
 /* ========================================
-   Section Fade-in (initial state before GSAP)
+   Buttons — premium corporate
+   ======================================== */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.9rem 1.6rem;
+  background: var(--color-brand-blue);
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  border-radius: 8px;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 0 rgba(0, 73, 106, 0.18), 0 2px 12px rgba(0, 94, 130, 0.18);
+}
+.btn-primary:hover {
+  background: var(--color-brand-blue-dark);
+  box-shadow: 0 1px 0 rgba(0, 73, 106, 0.18), 0 4px 16px rgba(0, 94, 130, 0.25);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.4rem;
+  color: var(--color-navy);
+  font-size: 14px;
+  font-weight: 600;
+  background: #FFFFFF;
+  border: 1px solid var(--color-rule);
+  border-radius: 8px;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.btn-secondary:hover {
+  color: var(--color-brand-blue);
+  border-color: var(--color-brand-blue);
+  background: var(--color-brand-blue-pale);
+}
+
+.btn-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-brand-green-dark);
+  font-size: 14px;
+  font-weight: 600;
+  transition: color 0.2s ease, gap 0.2s ease;
+}
+.btn-text:hover {
+  color: var(--color-brand-green);
+  gap: 0.6rem;
+}
+
+/* ========================================
+   Tags / badges
+   ======================================== */
+.tag-blue, .tag-green, .tag-gold, .tag-amber {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.625rem;
+  border-radius: 999px;
+}
+.tag-blue {
+  color: var(--color-brand-blue);
+  background: var(--color-brand-blue-pale);
+}
+.tag-green {
+  color: var(--color-brand-green-dark);
+  background: var(--color-brand-green-pale);
+}
+.tag-gold, .tag-amber {
+  color: var(--color-brand-gold-dark);
+  background: var(--color-brand-gold-pale);
+}
+
+/* ========================================
+   Cards
+   ======================================== */
+.card-soft {
+  background: var(--color-surface);
+  border: 1px solid var(--color-rule);
+  border-radius: 12px;
+  padding: 1.75rem;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card-soft:hover {
+  border-color: var(--color-brand-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(18, 50, 74, 0.06);
+}
+.card-soft.is-blue:hover   { border-color: var(--color-brand-blue); }
+.card-soft.is-green:hover  { border-color: var(--color-brand-green); }
+.card-soft.is-gold:hover   { border-color: var(--color-brand-gold); }
+
+.card-soft.accent-top-blue   { border-top: 3px solid var(--color-brand-blue); }
+.card-soft.accent-top-green  { border-top: 3px solid var(--color-brand-green); }
+.card-soft.accent-top-gold   { border-top: 3px solid var(--color-brand-gold); }
+
+/* ========================================
+   Icon squares — corporate, larger radius, lighter fills
+   ======================================== */
+.icon-square {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.icon-square-blue {
+  background: var(--color-brand-blue-pale);
+  color: var(--color-brand-blue);
+}
+.icon-square-green {
+  background: var(--color-brand-green-pale);
+  color: var(--color-brand-green-dark);
+}
+.icon-square-gold,
+.icon-square-amber {
+  background: var(--color-brand-gold-pale);
+  color: var(--color-brand-gold-dark);
+}
+
+.icon-square-on-navy {
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.icon-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+/* ========================================
+   Quiet reveal — single, subtle
    ======================================== */
 .reveal {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(8px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
 }
-
-.reveal.active {
+.reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
 /* ========================================
-   SVG Progress Ring
+   Footnote refs
    ======================================== */
-.progress-ring-circle {
-  transition: stroke-dashoffset 0.8s ease-out;
-  transform: rotate(-90deg);
-  transform-origin: 50% 50%;
+sup.fn-ref {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6em;
+  font-weight: 600;
+  color: var(--color-brand-gold-dark);
+  vertical-align: super;
+  margin-left: 0.15em;
+}
+sup.fn-ref a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
 }
 
 /* ========================================
-   3D Card Tilt
+   Form fields
    ======================================== */
-.tilt-card {
-  transform-style: preserve-3d;
-  perspective: 1000px;
-}
-
-.tilt-card-inner {
-  transition: transform 0.15s ease-out;
-  transform-style: preserve-3d;
-}
-
-/* ========================================
-   Cursor Glow on Cards
-   ======================================== */
-.cursor-glow {
-  position: relative;
-  overflow: hidden;
-}
-
-.cursor-glow::after {
-  content: '';
-  position: absolute;
-  top: var(--glow-y, 50%);
-  left: var(--glow-x, 50%);
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(0, 188, 212, 0.15) 0%, transparent 70%);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.cursor-glow:hover::after {
-  opacity: 1;
-}
-
-/* ========================================
-   Footer separator
-   ======================================== */
-.footer-separator {
-  height: 1px;
-  background: linear-gradient(90deg, transparent 0%, var(--color-primary) 50%, transparent 100%);
-}
-
-/* ========================================
-   Scroll Indicator Bounce
-   ======================================== */
-.scroll-indicator {
-  animation: bounce 2s ease-in-out infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(10px); }
-}
-
-/* ========================================
-   Floating Label Inputs
-   ======================================== */
-.floating-input {
-  position: relative;
-}
-
-.floating-input input,
-.floating-input textarea,
-.floating-input select {
+.field {
+  display: block;
   width: 100%;
-  padding: 1rem 1rem 0.5rem;
-  background: rgba(51, 65, 85, 0.5);
-  border: 1px solid rgba(100, 116, 139, 0.5);
-  border-radius: 0.5rem;
-  color: var(--color-text-primary);
-  font-size: 1rem;
-  font-family: var(--font-sans);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background: #FFFFFF;
+  border: 1px solid var(--color-rule);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: var(--color-navy);
+  font-family: inherit;
+  font-size: 15px;
   outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-
-.floating-input input:focus,
-.floating-input textarea:focus,
-.floating-input select:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.15);
+.field:focus {
+  border-color: var(--color-brand-blue);
+  box-shadow: 0 0 0 3px var(--color-brand-blue-pale);
 }
+.field::placeholder { color: var(--color-ink-faint); }
+textarea.field { resize: vertical; min-height: 6rem; }
 
-.floating-input label {
-  position: absolute;
-  top: 50%;
-  left: 1rem;
-  transform: translateY(-50%);
-  color: var(--color-text-muted);
-  font-size: 1rem;
-  pointer-events: none;
-  transition: all 0.2s ease;
-}
+select.field { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--color-ink-mute) 50%), linear-gradient(135deg, var(--color-ink-mute) 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; padding-right: 2rem; }
 
-.floating-input textarea ~ label {
-  top: 1rem;
-  transform: translateY(0);
-}
-
-.floating-input input:focus ~ label,
-.floating-input input:not(:placeholder-shown) ~ label,
-.floating-input textarea:focus ~ label,
-.floating-input textarea:not(:placeholder-shown) ~ label,
-.floating-input select:focus ~ label,
-.floating-input select:valid ~ label {
-  top: 0.4rem;
-  transform: translateY(0);
-  font-size: 0.75rem;
-  color: var(--color-primary);
+/* ========================================
+   World map theming — uses brand colors
+   ======================================== */
+.world-map.world-map-gtp {
+  --wm-dot:   rgba(18, 50, 74, 0.18);
+  --wm-line:  var(--color-brand-blue);
+  --wm-pulse: var(--color-brand-green);
 }
 
 /* ========================================
-   Reduced Motion
+   Backwards-compat shims for old glass classes
    ======================================== */
+.glass-card {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: none;
+}
+.glass-card:hover { transform: none; box-shadow: none; border-color: transparent; }
+
+.text-gradient, .bg-clip-text {
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+  color: var(--color-brand-blue) !important;
+}
+
+.cursor-glow::after { display: none; }
+.scroll-indicator { animation: none; }
+.scroll-progress { display: none !important; }
+
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-
-  .reveal {
-    opacity: 1;
-    transform: none;
-  }
-
-  .scroll-indicator {
-    animation: none;
-  }
-}
-
-/* ========================================
-   Mobile Optimizations
-   ======================================== */
-@media (max-width: 768px) {
-  .glass-card {
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-
-  .glass-card:hover {
-    transform: none;
-    translate: none;
-    scale: none;
-  }
-}
-
-/* Prevent sticky :hover on touch devices */
-@media (hover: none) {
-  .glass-card:hover {
-    transform: none;
-    translate: none;
-    scale: none;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.03);
-  }
+  .reveal { opacity: 1; transform: none; transition: none; }
 }

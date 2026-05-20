@@ -2,242 +2,692 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
-import ServiceCard from '../components/ServiceCard.astro';
-import { services } from '../data/services';
 import { pricing, pricingNote } from '../data/pricing';
-import { benefits, accreditations } from '../data/stats';
+import {
+  // Programme
+  LifeBuoy, MessagesSquare, Smartphone, Briefcase, UsersRound, LineChart,
+  // Governance
+  Stethoscope, ShieldCheck, Fingerprint, Gauge,
+  // Partnership trio
+  Handshake, Globe, FileText,
+  // Contact
+  Mail, MapPin, Network,
+  // Who we help
+  Building2, Users, ClipboardList,
+  // Why GTP
+  BadgeCheck, Globe2, HeartHandshake,
+} from 'lucide-astro';
 
-const pageTitle = "Global Team Plans | Professional Employee Assistance Programme (EAP)";
-const pageDescription = "Support 35+ Million lives with our professional EAP services across 180 countries. 24/7 crisis support, mental health resources, and digital wellbeing.";
+const programmeIcons: Record<string, any> = {
+  crisis:      LifeBuoy,
+  counselling: MessagesSquare,
+  digital:     Smartphone,
+  worklife:    Briefcase,
+  community:   UsersRound,
+  analytics:   LineChart,
+};
+
+const pageTitle = "Global Team Plans — Global employee wellbeing, made simple";
+const pageDescription = "Global Team Plans helps companies access trusted global health, wellbeing, and EAP programmes — delivered as a certified TELUS Health partner agency across 180+ countries.";
+
+// Programme — what's included
+const programme = [
+  { num: '01', title: '24/7 crisis & critical-incident response', body: 'Immediate phone and video access to qualified counsellors for safety events, workplace incidents, bereavement, and disaster response. Available in 50+ languages, in-country routing where it matters.', visual: 'crisis' },
+  { num: '02', title: 'Structured counselling', body: 'Short-term modalities — 1:1 in-person, video, or telephonic — for what actually shows up in a workforce: anxiety, low mood, sleep, substance use, relationship strain. Sessions tracked, outcomes measured.', visual: 'counselling' },
+  { num: '03', title: 'Digital wellbeing platform', body: 'Consumer-grade app: self-guided CBT programmes, an assessed content library, and the Total Wellbeing Index that points members to the right support before they need crisis care.', visual: 'digital' },
+  { num: '04', title: 'WorkLife services', body: 'Legal consultations, financial planning, childcare and eldercare navigation, and nutritional coaching. The part of an EAP that quietly removes more friction than counselling alone.', visual: 'worklife' },
+  { num: '05', title: 'OurHealth peer community', body: 'Anonymous peer-to-peer forum, professionally moderated, available in 30+ languages. A first step for members who are not yet ready to talk to a clinician.', visual: 'community' },
+  { num: '06', title: 'HR analytics & utilisation dashboard', body: 'Aggregate, anonymised reporting for HR: utilisation, modality mix, presenting issues, and demographic trends. Quarterly business reviews with named account management.', visual: 'analytics' },
+];
+
+const whoWeHelp = [
+  {
+    icon: Building2,
+    accent: 'blue',
+    title: 'Employers',
+    body: 'Procurement-ready EAP for organisations whose people don\'t all sit in the same country. One contract, consistent governance, locally-licensed delivery.',
+  },
+  {
+    icon: Users,
+    accent: 'green',
+    title: 'Global teams',
+    body: 'Distributed and remote workforces, multilingual teams, and employees crossing borders on assignment. Equal access, in their language and timezone.',
+  },
+  {
+    icon: ClipboardList,
+    accent: 'gold',
+    title: 'HR & benefits leaders',
+    body: 'Comparable reporting cohort to cohort, named account management, and the paperwork your legal and procurement teams already know how to process.',
+  },
+];
+
+const whyGtp = [
+  {
+    icon: BadgeCheck,
+    bar: 'blue',
+    title: 'Trusted providers',
+    body: 'We sell the full TELUS Health Employee Assistance Programme — accredited by the Council on Accreditation, run under one global clinical model.',
+  },
+  {
+    icon: Globe2,
+    bar: 'green',
+    title: 'Global reach',
+    body: 'One contract covers 180+ countries and 50+ languages. In-country counsellors, in-language platforms, consistent SLAs.',
+  },
+  {
+    icon: HeartHandshake,
+    bar: 'gold',
+    title: 'Human support',
+    body: 'You get the contract, the local relationship, and someone who answers your email on Athens time. The clinical service stays clinical.',
+  },
+];
+
+// Footnotes / sources
+const sources = [
+  { n: 1, label: 'TELUS Health EAP delivery footprint — 35M+ lives, 180+ countries, 50+ languages.', url: 'https://www.telushealth.com/', publisher: 'TELUS Health' },
+  { n: 2, label: 'TELUS Health Mental Health Index — workplace outcomes for participating employee populations.', url: 'https://www.telushealth.com/health-insights', publisher: 'TELUS Health Insights' },
+  { n: 3, label: 'Council on Accreditation (COA) — clinical governance standard held by TELUS Health.', url: 'https://coanet.org/', publisher: 'Council on Accreditation' },
+];
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
   <Nav />
 
   <main>
-    <!-- Hero Section -->
     <Hero />
 
-    <!-- Services Section -->
-    <section id="services" class="py-24 px-4 bg-brand-bg-secondary/30 relative">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16 reveal">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">Comprehensive <span class="text-teal">Wellbeing Solutions</span></h2>
-          <p class="max-w-2xl mx-auto text-slate-400 text-sm md:text-base leading-relaxed">
-            24/7/365 support across mental health, social, physical and financial pillars with world-class clinical governance.
-          </p>
+    <!-- ============================================================
+         WHO WE HELP — three audience cards (blue / green / gold)
+         ============================================================ -->
+    <section id="audience" class="section section-soft border-t border-[var(--color-rule)]">
+      <div class="container-prose">
+        <div class="max-w-2xl mb-14" data-reveal="up">
+          <div class="eyebrow eyebrow-mute mb-5">Who we help</div>
+          <h2 data-split class="text-[clamp(1.9rem,3.3vw,2.75rem)] leading-[1.1] tracking-[-0.02em]">
+            Built for the people who actually <span class="accent-hl">buy and run</span> EAP programmes.
+          </h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {services.map(service => (
-            <ServiceCard
-              title={service.title}
-              description={service.description}
-              features={service.features}
-              type={service.type as any}
-            />
-          ))}
+        <div class="grid md:grid-cols-3 gap-6" data-reveal-stagger>
+          {whoWeHelp.map((a, i) => {
+            const Ico = a.icon;
+            const accentClass = `accent-top-${a.accent}`;
+            const iconClass   = `icon-square icon-square-${a.accent}`;
+            const isClass     = `is-${a.accent}`;
+            return (
+              <div class={`card-soft ${isClass} ${accentClass}`} data-tilt data-tilt-max="5">
+                <span class={iconClass}><Ico size={22} strokeWidth={1.75} /></span>
+                <h3 class="mt-5 text-[1.25rem] tracking-tight">{a.title}</h3>
+                <p class="mt-3 text-[15px] leading-relaxed text-[var(--color-ink-soft)]">{a.body}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
 
-    <!-- Results Section -->
-    <section id="results" class="py-24 px-4 relative overflow-hidden">
-      <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-teal/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
+    <!-- ============================================================
+         PARTNERSHIP — agency story + dotted world map
+         ============================================================ -->
+    <section id="partnership" class="section section-white border-t border-[var(--color-rule)]">
+      <div class="container-prose grid md:grid-cols-12 gap-x-12 gap-y-14">
 
-      <div class="max-w-6xl mx-auto relative z-10">
-        <div class="text-center mb-16 reveal">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">Proven <span class="text-teal">Results & Measurable Impact</span></h2>
-          <p class="text-slate-400 text-sm">Evidence-based wellbeing solutions that deliver tangible business outcomes and ROI.</p>
+        <div class="md:col-span-5 md:sticky md:top-32 self-start" data-reveal="up">
+          <div class="eyebrow eyebrow-blue mb-5">About this partnership</div>
+          <h2 data-split class="text-[clamp(2rem,3.5vw,3.25rem)] leading-[1.05] tracking-[-0.02em]">
+            We sell <span class="accent-hl-green">TELUS&nbsp;Health</span>. We don't pretend we're them.
+          </h2>
+          <p class="lede mt-6">
+            Global Team Plans is a certified TELUS&nbsp;Health partner agency, headquartered in Athens. We sell, implement, and account-manage the TELUS&nbsp;Health Employee Assistance Programme for organisations whose people don't all sit in the same country.
+          </p>
+          <p class="mt-4 text-[15px] text-[var(--color-ink-soft)] leading-relaxed">
+            The clinical service, the digital platform, the 24/7 counsellor network — all built and run by TELUS&nbsp;Health, one of the largest EAP providers in the world. What you get from us is the contract, the local relationship, the procurement-friendly paperwork, and someone who answers your email on Athens time.
+          </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-          {[
-            { value: '50%', label: 'Reduction in poor mental health ratings' },
-            { value: '38%', label: 'Drop in presenteeism hours' },
-            { value: '42%', label: 'Increase in good mental health ratings' }
-          ].map(stat => (
-            <div class="glass-card p-8 rounded-3xl reveal border-white/[0.03] group hover:border-teal/20">
-              <div class="text-3xl sm:text-4xl md:text-5xl font-bold text-teal mb-4 stat-number" data-value={parseInt(stat.value)} data-suffix="%">{stat.value}</div>
-              <div class="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-
-        <!-- Benefits -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-20">
-          {benefits.map(benefit => (
-            <div class="flex items-start text-left reveal group">
-              <div class="w-10 h-10 bg-teal rounded-xl flex items-center justify-center mr-4 mt-1 flex-shrink-0">
-                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  {benefit.icon === 'globe' && <><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></>}
-                  {benefit.icon === 'bar-chart-3' && <><path d="M18 20V10M12 20V4M6 20v-6"/></>}
-                  {benefit.icon === 'shield-check' && <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></>}
-                  {benefit.icon === 'heart' && <><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></>}
-                  {benefit.icon === 'alert-triangle' && <><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></>}
-                  {benefit.icon === 'lock' && <><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></>}
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-lg font-bold text-white mb-2">{benefit.title}</h3>
-                <p class="text-slate-400 text-sm leading-relaxed">{benefit.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <!-- Accreditations / Trust -->
-        <div class="text-center reveal">
-          <h3 class="text-2xl font-bold text-teal mb-4">Trusted by Organizations Worldwide</h3>
-          <p class="text-slate-400 mb-8 text-sm">
-            Accredited by the Council on Accreditation with strict clinical governance standards.
+        <div class="md:col-span-7" data-reveal="up" data-reveal-delay="0.15">
+          <div class="world-map world-map-light world-map-gtp" id="partnership-map"></div>
+          <p class="mt-4 text-[12px] text-[var(--color-ink-mute)] text-center">
+            Athens HQ &nbsp;·&nbsp; TELUS&nbsp;Health delivery network spans 180+ countries<sup class="fn-ref"><a href="#footnotes">1</a></sup>
           </p>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {accreditations.map(item => (
-              <div class="glass-card p-6 rounded-2xl reveal border-white/[0.03]">
-                <div class="w-10 h-10 bg-teal/20 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                  <svg class="w-5 h-5 text-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    {item.icon === 'badge-check' && <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></>}
-                    {item.icon === 'building' && <><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></>}
-                    {item.icon === 'shield' && <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></>}
-                  </svg>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10 pt-8 border-t border-[var(--color-rule)]">
+            <div>
+              <span class="icon-square icon-square-blue mb-3"><Handshake size={20} strokeWidth={1.75} /></span>
+              <div class="eyebrow eyebrow-mute mb-2">Agency role</div>
+              <div class="text-[1rem] leading-snug font-semibold">Contracting, implementation, account management</div>
+            </div>
+            <div>
+              <span class="icon-square icon-square-green mb-3"><Globe size={20} strokeWidth={1.75} /></span>
+              <div class="eyebrow eyebrow-mute mb-2">Clinical delivery</div>
+              <div class="text-[1rem] leading-snug font-semibold">TELUS&nbsp;Health network, in-country</div>
+            </div>
+            <div>
+              <span class="icon-square icon-square-gold mb-3"><FileText size={20} strokeWidth={1.75} /></span>
+              <div class="eyebrow eyebrow-mute mb-2">Contract term</div>
+              <div class="text-[1rem] leading-snug font-semibold">36-month standard, custom available</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script is:inline>
+        (function () {
+          function start() {
+            if (!window.WorldMap) return setTimeout(start, 50);
+            window.WorldMap.init('#partnership-map', {
+              dots: [
+                { from: { lat: 37.98, lng: 23.72 }, to: { lat: 51.50, lng:  -0.13 } },
+                { from: { lat: 37.98, lng: 23.72 }, to: { lat: 40.71, lng: -74.00 } },
+                { from: { lat: 37.98, lng: 23.72 }, to: { lat: 43.65, lng: -79.38 } },
+                { from: { lat: 37.98, lng: 23.72 }, to: { lat:  1.35, lng: 103.82 } },
+                { from: { lat: 37.98, lng: 23.72 }, to: { lat: 25.20, lng:  55.27 } },
+                { from: { lat: 37.98, lng: 23.72 }, to: { lat:-26.20, lng:  28.04 } },
+                { from: { lat: 37.98, lng: 23.72 }, to: { lat:-33.87, lng: 151.21 } },
+              ]
+            });
+          }
+          if (document.readyState !== 'loading') start();
+          else document.addEventListener('DOMContentLoaded', start);
+        })();
+      </script>
+    </section>
+
+    <!-- ============================================================
+         PROGRAMME — 6-card grid with hover-tilt
+         ============================================================ -->
+    <section id="programme" class="section section-soft border-t border-[var(--color-rule)]">
+      <div class="container-prose">
+        <div class="max-w-2xl mb-14">
+          <div class="eyebrow eyebrow-green mb-5" data-reveal="up">The programme</div>
+          <h2 data-split class="text-[clamp(2rem,3.5vw,3.25rem)] leading-[1.05] tracking-[-0.02em]">
+            What's actually <span class="accent-hl-green">in the box</span>.
+          </h2>
+          <p data-reveal="up" data-reveal-delay="0.15" class="lede mt-6">
+            Six service lines, one contract. Designed for HR teams who need consistency across borders and the audit trail to prove it.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" data-reveal-stagger>
+          {programme.map(item => {
+            const Icon = programmeIcons[item.visual];
+            return (
+              <article
+                class="card-soft is-green flex flex-col h-full"
+                data-tilt
+                data-tilt-max="4"
+                style="padding: 1.85rem;"
+              >
+                <div class="flex items-center justify-between mb-5">
+                  <span class="icon-square icon-square-green">
+                    <Icon size={22} strokeWidth={1.75} />
+                  </span>
+                  <span class="font-mono text-[11px] tracking-widest text-[var(--color-ink-mute)]" style="font-family: ui-monospace, 'SF Mono', Menlo, monospace;">
+                    {item.num}
+                  </span>
                 </div>
-                <h4 class="font-bold text-white mb-2">{item.title}</h4>
-                <p class="text-slate-500 text-sm">{item.description}</p>
+                <h3 class="text-[1.2rem] leading-[1.25] tracking-tight">{item.title}</h3>
+                <p class="mt-3 text-[14.5px] leading-[1.6] text-[var(--color-ink-soft)] flex-grow">{item.body}</p>
+                <div class="mt-6 pt-5 border-t border-[var(--color-rule)] flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-[var(--color-ink-mute)]">
+                  <span class="block w-4 h-px bg-[var(--color-brand-green)]"></span>
+                  <span>Service line</span>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         WHY GTP — navy section, three pillars with tri-color bars
+         ============================================================ -->
+    <section id="why" class="section section-navy">
+      <div class="container-prose">
+        <div class="max-w-2xl mb-14" data-reveal="up">
+          <div class="eyebrow mb-5">Why Global Team Plans</div>
+          <h2 data-split class="text-[clamp(2rem,3.5vw,3.25rem)] leading-[1.05] tracking-[-0.02em]">
+            A calm, trustworthy partner — for people who take wellbeing seriously.
+          </h2>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-10 md:gap-12" data-reveal-stagger>
+          {whyGtp.map((p, i) => {
+            const Ico = p.icon;
+            const barColor =
+              p.bar === 'blue'  ? 'var(--color-brand-blue-soft)' :
+              p.bar === 'green' ? 'var(--color-brand-green)' :
+              'var(--color-brand-gold)';
+            return (
+              <div>
+                <span class="icon-square icon-square-on-navy">
+                  <Ico size={22} strokeWidth={1.75} />
+                </span>
+                <div class="mt-6 h-[3px] w-12 rounded-sm" style={`background: ${barColor};`}></div>
+                <h3 class="mt-5 text-[1.35rem] tracking-tight" style="color: #FFFFFF;">{p.title}</h3>
+                <p class="mt-3 text-[15px] leading-relaxed" style="color: rgba(245,248,250,0.75);">{p.body}</p>
               </div>
-            ))}
+            );
+          })}
+        </div>
+
+        <!-- Tri-colour rail -->
+        <div class="mt-16 flex items-center gap-4 text-[12px]" style="color: rgba(245,248,250,0.55);">
+          <span class="tri-rule"><span class="b1"></span><span class="b2"></span><span class="b3"></span></span>
+          <span class="uppercase tracking-[0.18em]">Global &nbsp;·&nbsp; Team &nbsp;·&nbsp; Plans</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         EVIDENCE — ROI numbers with citations
+         ============================================================ -->
+    <section id="evidence" class="section section-white border-t border-[var(--color-rule)]">
+      <div class="container-prose">
+        <div class="max-w-2xl mb-16" data-reveal="up">
+          <div class="eyebrow eyebrow-gold mb-5">Evidence</div>
+          <h2 data-split class="text-[clamp(2rem,3.5vw,3.25rem)] leading-[1.05] tracking-[-0.02em]">
+            What the data actually <span class="accent-hl">shows</span>.
+          </h2>
+          <p class="lede mt-6">
+            Workplace outcomes from TELUS&nbsp;Health's Mental Health Index for employee populations using the programme. Sourced, not invented.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-x-12 gap-y-12" data-reveal-stagger>
+          <div>
+            <div class="text-[clamp(3.5rem,6.5vw,5rem)] leading-none tracking-[-0.04em] font-bold text-[var(--color-brand-blue)]">
+              <span data-count-up="50" data-count-suffix="%">50%</span>
+            </div>
+            <div class="mt-3 h-[3px] w-12 rounded-sm" style="background: var(--color-brand-blue);"></div>
+            <div class="mt-4 text-[15px] leading-snug text-[var(--color-ink-soft)]">
+              Reduction in employees rating their mental health as poor<sup class="fn-ref"><a href="#footnotes">2</a></sup>
+            </div>
+          </div>
+
+          <div>
+            <div class="text-[clamp(3.5rem,6.5vw,5rem)] leading-none tracking-[-0.04em] font-bold text-[var(--color-brand-green-dark)]">
+              <span data-count-up="38" data-count-suffix="%">38%</span>
+            </div>
+            <div class="mt-3 h-[3px] w-12 rounded-sm" style="background: var(--color-brand-green);"></div>
+            <div class="mt-4 text-[15px] leading-snug text-[var(--color-ink-soft)]">
+              Drop in presenteeism hours among participating employees<sup class="fn-ref"><a href="#footnotes">2</a></sup>
+            </div>
+          </div>
+
+          <div>
+            <div class="text-[clamp(3.5rem,6.5vw,5rem)] leading-none tracking-[-0.04em] font-bold text-[var(--color-brand-gold-dark)]">
+              <span data-count-up="42" data-count-suffix="%">42%</span>
+            </div>
+            <div class="mt-3 h-[3px] w-12 rounded-sm" style="background: var(--color-brand-gold);"></div>
+            <div class="mt-4 text-[15px] leading-snug text-[var(--color-ink-soft)]">
+              Increase in employees rating their mental health as good<sup class="fn-ref"><a href="#footnotes">2</a></sup>
+            </div>
+          </div>
+        </div>
+
+        <p class="mt-12 text-[13px] text-[var(--color-ink-mute)] max-w-2xl">
+          These are outcomes from TELUS&nbsp;Health's published Mental Health Index data, not GTP marketing figures. Numbers vary by industry, region, and baseline; your account team will share comparable cohort data during the proposal stage.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         GOVERNANCE — A1..A4 compliance cards
+         ============================================================ -->
+    <section id="governance" class="section section-soft border-t border-[var(--color-rule)]">
+      <div class="container-prose">
+        <div class="max-w-2xl mb-14" data-reveal="up">
+          <div class="eyebrow eyebrow-mute mb-5">Governance & compliance</div>
+          <h2 data-split class="text-[clamp(2rem,3.5vw,3.25rem)] leading-[1.05] tracking-[-0.02em]">
+            What your procurement, legal, and IT teams will actually <span class="accent-hl">ask about</span>.
+          </h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6" data-reveal-stagger>
+          <div class="card-soft accent-top-blue" data-tilt data-tilt-max="4">
+            <div class="flex items-center gap-4 mb-4">
+              <span class="icon-square icon-square-blue"><Stethoscope size={22} strokeWidth={1.75} /></span>
+              <span class="font-mono text-[12px] tracking-widest text-[var(--color-ink-mute)]">A1</span>
+            </div>
+            <h3 class="text-[1.25rem] tracking-tight mb-3">Clinical governance</h3>
+            <p class="text-[15px] leading-relaxed text-[var(--color-ink-soft)]">
+              TELUS&nbsp;Health is accredited by the <a class="link-underline" href="https://coanet.org/" target="_blank" rel="noopener">Council on Accreditation</a><sup class="fn-ref"><a href="#footnotes">3</a></sup>. Counsellors are locally licensed, supervised under one global clinical model, with case escalation paths defined at contract signing.
+            </p>
+          </div>
+
+          <div class="card-soft accent-top-green" data-tilt data-tilt-max="4">
+            <div class="flex items-center gap-4 mb-4">
+              <span class="icon-square icon-square-green"><ShieldCheck size={22} strokeWidth={1.75} /></span>
+              <span class="font-mono text-[12px] tracking-widest text-[var(--color-ink-mute)]">A2</span>
+            </div>
+            <h3 class="text-[1.25rem] tracking-tight mb-3">Data protection — GDPR & equivalents</h3>
+            <p class="text-[15px] leading-relaxed text-[var(--color-ink-soft)]">
+              Member-level data is held under strict confidentiality. Aggregate HR reporting only — no identifying information leaves the clinical system. Data Processing Agreement and Standard Contractual Clauses available pre-contract.
+            </p>
+          </div>
+
+          <div class="card-soft accent-top-gold" data-tilt data-tilt-max="4">
+            <div class="flex items-center gap-4 mb-4">
+              <span class="icon-square icon-square-gold"><Fingerprint size={22} strokeWidth={1.75} /></span>
+              <span class="font-mono text-[12px] tracking-widest text-[var(--color-ink-mute)]">A3</span>
+            </div>
+            <h3 class="text-[1.25rem] tracking-tight mb-3">Information security</h3>
+            <p class="text-[15px] leading-relaxed text-[var(--color-ink-soft)]">
+              TELUS&nbsp;Health operates an ISO&nbsp;27001-aligned information security programme. SSO (SAML/OIDC) and member-eligibility integrations are standard. Penetration test summaries available under NDA.
+            </p>
+          </div>
+
+          <div class="card-soft accent-top-blue" data-tilt data-tilt-max="4">
+            <div class="flex items-center gap-4 mb-4">
+              <span class="icon-square icon-square-blue"><Gauge size={22} strokeWidth={1.75} /></span>
+              <span class="font-mono text-[12px] tracking-widest text-[var(--color-ink-mute)]">A4</span>
+            </div>
+            <h3 class="text-[1.25rem] tracking-tight mb-3">Service-level commitments</h3>
+            <p class="text-[15px] leading-relaxed text-[var(--color-ink-soft)]">
+              24/7/365 helpline availability. Crisis-call answer-time targets, first-counselling-session lead-times, and platform uptime defined in your master service agreement. Quarterly business reviews against the SLA.
+            </p>
           </div>
         </div>
       </div>
     </section>
 
-
-
-    <!-- Pricing Section -->
-    <section id="pricing" class="py-24 px-4">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16 reveal">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">Flexible <span class="text-teal">Pricing Plans</span></h2>
-          <p class="text-slate-400 text-sm max-w-2xl mx-auto">Choose the right level of support for your organization. All plans include our core EAP services with transparent, per-employee pricing.</p>
+    <!-- ============================================================
+         PRICING
+         ============================================================ -->
+    <section id="pricing" class="section section-white border-t border-[var(--color-rule)]">
+      <div class="container-prose">
+        <div class="grid md:grid-cols-12 gap-x-12 gap-y-10 mb-14">
+          <div class="md:col-span-5" data-reveal="up">
+            <div class="eyebrow eyebrow-blue mb-5">Pricing</div>
+            <h2 data-split class="text-[clamp(2rem,3.5vw,3.25rem)] leading-[1.05] tracking-[-0.02em]">
+              Per employee, per year. <span class="accent-hl-green">No surprises.</span>
+            </h2>
+          </div>
+          <div class="md:col-span-6 md:col-start-7 md:pt-6" data-reveal="up" data-reveal-delay="0.12">
+            <p class="text-[15px] leading-relaxed text-[var(--color-ink-soft)]">
+              Two standard tiers cover most enterprises up to 3,000 employees. Above that, pricing moves to a custom band with negotiated language coverage, integrations, and SLA terms. {pricingNote}
+            </p>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto pt-6">
-          {pricing.map(plan => (
-            <div class={`glass-card p-6 sm:p-8 rounded-3xl border-white/[0.03] flex flex-col ${plan.popular ? 'border-teal/30 ring-1 ring-teal/20 md:scale-105 shadow-2xl shadow-teal/5 relative z-10' : ''}`}>
-              {plan.popular && <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-teal text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest whitespace-nowrap">Most Popular</div>}
-              <h3 class="text-2xl font-bold mb-2">{plan.name}</h3>
-              <p class="text-slate-400 text-xs mb-6 uppercase tracking-widest">{plan.subtitle}</p>
+        <div class="grid md:grid-cols-2 gap-6" data-reveal-stagger>
+          {pricing.map((plan, idx) => (
+            <div class={"card-soft " + (plan.popular ? 'accent-top-blue' : '')} data-tilt data-tilt-max="3">
+              {plan.popular && (
+                <div class="mb-4">
+                  <span class="tag-gold">Most enterprises pick this</span>
+                </div>
+              )}
+              <div class="eyebrow eyebrow-mute">{plan.subtitle}</div>
+              <h3 class="text-[1.5rem] mt-2 tracking-tight">{plan.name}</h3>
 
-              <div class="flex flex-wrap items-baseline gap-1 mb-1">
-                <span class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">{plan.currency}{plan.priceYearly}</span>
-                <span class="text-slate-500 text-xs sm:text-sm italic">per employee per year</span>
+              <div class="mt-7 flex items-baseline gap-2">
+                <span class="text-[3.25rem] leading-none tracking-[-0.03em] font-bold text-[var(--color-navy)]">{plan.currency}{plan.priceYearly}</span>
+                <span class="text-[13px] text-[var(--color-ink-mute)]">/ employee / year</span>
               </div>
-              <p class="text-lg text-teal font-bold mb-10 tracking-tight">Monthly equivalent {plan.currency}{plan.priceMonthly}</p>
+              <div class="mt-2 text-[13px] text-[var(--color-ink-mute)]">
+                ≈ {plan.currency}{plan.priceMonthly} / employee / month
+              </div>
 
-              <ul class="space-y-4 mb-10 flex-grow">
+              <ul class="mt-7 space-y-3 flex-grow">
                 {plan.features.map(feature => (
-                  <li class="flex items-center text-sm text-slate-400">
-                    <span class="text-teal mr-3 text-lg">✓</span>
+                  <li class="flex items-start text-[14px] leading-snug text-[var(--color-ink-soft)]">
+                    <span aria-hidden class="mr-3 mt-[8px] inline-block w-3 h-[2px] rounded-sm" style="background: var(--color-brand-green);"></span>
                     {feature}
                   </li>
                 ))}
               </ul>
 
-              <button data-plan={plan.name} class={`plan-select-btn w-full py-4 rounded-xl text-center font-bold transition-all cursor-pointer ${plan.popular ? 'bg-teal text-white hover:bg-teal-dark shadow-lg shadow-teal/10' : 'bg-white/5 text-white hover:bg-white/10 border border-white/10'}`}>
-                {plan.cta}
+              <button
+                data-plan={plan.name}
+                class={"plan-select-btn mt-8 self-start " + (plan.popular ? 'btn-primary' : 'btn-secondary')}
+              >
+                Discuss {plan.name}
+                <span aria-hidden>→</span>
               </button>
             </div>
           ))}
         </div>
-
-        <div class="text-center mt-8">
-          <p class="text-sm text-slate-500">{pricingNote}</p>
-        </div>
       </div>
     </section>
 
-    <!-- Lead Gen / Contact Section -->
-    <section id="contact" class="py-24 px-4 relative overflow-hidden bg-brand-bg-secondary/30">
-      <div class="max-w-3xl mx-auto">
-        <div class="glass-card p-6 sm:p-8 md:p-12 rounded-2xl sm:rounded-[2.5rem] border-white/[0.05] relative z-10">
-          <div class="text-center mb-10">
-            <h2 class="text-2xl sm:text-3xl font-bold mb-4">Ready to Transform Your <span class="text-teal">Workplace Wellbeing</span>?</h2>
-            <p class="text-slate-400 text-sm">Join over 35 million people who trust our global EAP services. Get started with a personalized demo.</p>
-            <div id="selectedPlan" class="text-teal font-semibold mt-2"></div>
-          </div>
+    <!-- ============================================================
+         CONTACT — Book a consultation
+         ============================================================ -->
+    <section id="contact" class="section section-soft border-t border-[var(--color-rule)]">
+      <div class="container-prose grid md:grid-cols-12 gap-x-12 gap-y-12">
 
-          <form id="demoForm" class="space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input type="text" name="firstName" placeholder="First Name" class="bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-3.5 text-base sm:text-sm focus:border-teal/50 outline-none transition-all" required />
-              <input type="text" name="lastName" placeholder="Last Name" class="bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-3.5 text-base sm:text-sm focus:border-teal/50 outline-none transition-all" required />
+        <div class="md:col-span-5" data-reveal="up">
+          <div class="eyebrow eyebrow-blue mb-5">Book a consultation</div>
+          <h2 data-split class="text-[clamp(2rem,3.5vw,3rem)] leading-[1.05] tracking-[-0.02em]">
+            Tell us where your people are. We'll come back with a proposal.
+          </h2>
+          <p class="lede mt-6">
+            Typical turnaround is three working days. Greek, English, German.
+          </p>
+          <div class="mt-10 pt-8 border-t border-[var(--color-rule)] space-y-5 text-[14px] text-[var(--color-ink-soft)]">
+            <div class="flex items-start gap-3">
+              <span class="icon-square icon-square-blue" style="width:36px;height:36px;"><Mail size={18} strokeWidth={1.75} /></span>
+              <div>
+                <div class="eyebrow eyebrow-mute mb-1">Direct</div>
+                <a class="link-underline" href="mailto:find@gtpinsurance.gr">find@gtpinsurance.gr</a>
+              </div>
             </div>
-            <input type="email" name="workEmail" placeholder="Work Email" class="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-3.5 text-base sm:text-sm focus:border-teal/50 outline-none transition-all" required />
-            <input type="text" name="companyName" placeholder="Company Name" class="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-3.5 text-base sm:text-sm focus:border-teal/50 outline-none transition-all" required />
-            <textarea name="message" placeholder="Tell us about your needs (optional)" rows="4" class="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-3.5 text-base sm:text-sm focus:border-teal/50 outline-none transition-all resize-y"></textarea>
-
-            <button type="submit" class="w-full bg-teal hover:bg-teal-dark active:bg-teal-dark text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-teal/10 transition-all sm:hover:scale-[1.02] active:scale-95">
-              Request Demo
-            </button>
-          </form>
-
-          <div class="mt-8 pt-8 border-t border-white/[0.05] text-center">
-             <p class="text-xs text-slate-500 mb-2">Prefer to speak directly?</p>
-             <a href="mailto:find@gtpinsurance.gr" class="text-teal font-semibold hover:underline">Email us directly at find@gtpinsurance.gr</a>
+            <div class="flex items-start gap-3">
+              <span class="icon-square icon-square-green" style="width:36px;height:36px;"><MapPin size={18} strokeWidth={1.75} /></span>
+              <div>
+                <div class="eyebrow eyebrow-mute mb-1">Headquarters</div>
+                Athens, Greece
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="icon-square icon-square-gold" style="width:36px;height:36px;"><Network size={18} strokeWidth={1.75} /></span>
+              <div>
+                <div class="eyebrow eyebrow-mute mb-1">Delivery</div>
+                TELUS&nbsp;Health network — 180+ countries
+              </div>
+            </div>
           </div>
         </div>
+
+        <form id="demoForm" class="md:col-span-7 card-soft" style="padding: 2rem;">
+          <div id="selectedPlan" class="eyebrow eyebrow-blue mb-6" style="min-height: 1em;"></div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-2">
+            <label class="block">
+              <span class="eyebrow eyebrow-mute block mb-2">First name</span>
+              <input type="text" name="firstName" required class="field" placeholder="Maria" />
+            </label>
+            <label class="block">
+              <span class="eyebrow eyebrow-mute block mb-2">Last name</span>
+              <input type="text" name="lastName" required class="field" placeholder="Papadopoulos" />
+            </label>
+            <label class="block">
+              <span class="eyebrow eyebrow-mute block mb-2">Work email</span>
+              <input type="email" name="workEmail" required class="field" placeholder="m.papadopoulos@acme.com" />
+            </label>
+            <label class="block">
+              <span class="eyebrow eyebrow-mute block mb-2">Direct phone</span>
+              <input type="tel" name="phone" class="field" placeholder="+30 ..." />
+            </label>
+            <label class="block">
+              <span class="eyebrow eyebrow-mute block mb-2">Company</span>
+              <input type="text" name="companyName" required class="field" placeholder="Acme Industries" />
+            </label>
+            <label class="block">
+              <span class="eyebrow eyebrow-mute block mb-2">Role</span>
+              <input type="text" name="role" class="field" placeholder="Head of Reward / People" />
+            </label>
+            <label class="block">
+              <span class="eyebrow eyebrow-mute block mb-2">Employees in scope</span>
+              <select name="employees" class="field">
+                <option value="">Select range</option>
+                <option>Up to 250</option>
+                <option>250 – 1,000</option>
+                <option>1,000 – 3,000</option>
+                <option>3,000 – 10,000</option>
+                <option>10,000+</option>
+              </select>
+            </label>
+            <label class="block">
+              <span class="eyebrow eyebrow-mute block mb-2">Countries in scope</span>
+              <input type="text" name="countries" class="field" placeholder="e.g. Greece, Germany, UAE" />
+            </label>
+          </div>
+
+          <label class="block mt-6">
+            <span class="eyebrow eyebrow-mute block mb-2">Anything we should know?</span>
+            <textarea name="message" rows="3" class="field" placeholder="Current incumbent, renewal date, regional risks, integrations needed…"></textarea>
+          </label>
+
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="submit" class="btn-primary">
+              Book a consultation
+              <span aria-hidden>→</span>
+            </button>
+            <p class="text-[12px] text-[var(--color-ink-mute)]">
+              Submitting opens your mail client. We'll reply within 3 working days under NDA if requested.
+            </p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FOOTNOTES
+         ============================================================ -->
+    <section id="footnotes" class="py-16 border-t border-[var(--color-rule)] bg-white">
+      <div class="container-prose">
+        <div class="eyebrow eyebrow-mute mb-6">Footnotes & sources</div>
+        <ol class="grid md:grid-cols-3 gap-x-10 gap-y-8 list-none">
+          {sources.map(s => (
+            <li class="text-[13px] leading-relaxed text-[var(--color-ink-soft)]">
+              <span class="font-mono mr-2" style="color: var(--color-brand-gold-dark);">[{s.n}]</span>
+              {s.label}
+              <a class="link-underline block mt-1" href={s.url} target="_blank" rel="noopener">{s.publisher} ↗</a>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   </main>
 
-  <footer class="py-12 px-4 border-t border-white/[0.03] bg-brand-bg-secondary/50">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-      <div class="flex flex-col items-center md:items-start gap-2">
-        <span class="text-lg font-bold">Global Team Plans</span>
-        <p class="text-slate-500 text-xs">Transforming workplace wellbeing across 180+ countries worldwide</p>
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="border-t border-[var(--color-rule)] py-14 bg-[var(--color-surface-soft)]">
+    <div class="container-prose">
+      <div class="grid md:grid-cols-12 gap-x-12 gap-y-10">
+        <div class="md:col-span-5">
+          <img src="/logo.png" alt="Global Team Plans" width="220" height="50" class="h-10 w-auto mb-5" />
+          <p class="text-[14px] leading-relaxed max-w-md text-[var(--color-ink-soft)]">
+            Certified TELUS&nbsp;Health partner agency. Global employee wellbeing plans for organisations that operate across borders.
+          </p>
+          <p class="mt-4 text-[12px] text-[var(--color-ink-mute)]">
+            Headquartered in Athens, Greece. Serving brokers, consultancies, and enterprises globally.
+          </p>
+        </div>
+
+        <div class="md:col-span-2">
+          <div class="eyebrow eyebrow-mute mb-3">Programme</div>
+          <ul class="space-y-2 text-[14px]">
+            <li><a class="hover:text-[var(--color-brand-blue)] transition-colors" href="#audience">Who we help</a></li>
+            <li><a class="hover:text-[var(--color-brand-blue)] transition-colors" href="#partnership">Partnership</a></li>
+            <li><a class="hover:text-[var(--color-brand-blue)] transition-colors" href="#programme">What's included</a></li>
+            <li><a class="hover:text-[var(--color-brand-blue)] transition-colors" href="#evidence">Evidence</a></li>
+          </ul>
+        </div>
+
+        <div class="md:col-span-2">
+          <div class="eyebrow eyebrow-mute mb-3">Procurement</div>
+          <ul class="space-y-2 text-[14px]">
+            <li><a class="hover:text-[var(--color-brand-blue)] transition-colors" href="#governance">Governance</a></li>
+            <li><a class="hover:text-[var(--color-brand-blue)] transition-colors" href="#pricing">Pricing</a></li>
+            <li><a class="hover:text-[var(--color-brand-blue)] transition-colors" href="#contact">Book a consultation</a></li>
+          </ul>
+        </div>
+
+        <div class="md:col-span-3">
+          <div class="eyebrow eyebrow-mute mb-3">Contact</div>
+          <ul class="space-y-2 text-[14px] text-[var(--color-ink-soft)]">
+            <li><a class="link-underline" href="mailto:find@gtpinsurance.gr">find@gtpinsurance.gr</a></li>
+            <li>Athens, Greece</li>
+          </ul>
+        </div>
       </div>
-      <div class="flex flex-wrap justify-center gap-4 sm:gap-8 text-xs text-slate-400">
-        <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-        <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
-        <a href="mailto:find@gtpinsurance.gr" class="hover:text-white transition-colors">Contact Us</a>
+
+      <!-- Tri-colour brand rail -->
+      <div class="mt-10 mb-6 flex items-center gap-3">
+        <span class="tri-rule"><span class="b1"></span><span class="b2"></span><span class="b3"></span></span>
+        <span class="text-[10px] uppercase tracking-[0.2em] text-[var(--color-ink-mute)]">Global · Team · Plans</span>
       </div>
-      <div class="text-slate-600 text-[10px]">
-        &copy; 2025 Global Team Plans. All rights reserved.
+
+      <hr class="rule mb-6" />
+
+      <div class="flex flex-col md:flex-row md:justify-between gap-3 text-[12px] text-[var(--color-ink-mute)]">
+        <div>&copy; {new Date().getFullYear()} Global Team Plans. All rights reserved. TELUS&nbsp;Health is a registered trademark of TELUS Corporation, used here in the context of a partner-agency relationship.</div>
+        <div class="flex gap-6">
+          <a class="hover:text-[var(--color-brand-blue)] transition-colors" href="#">Privacy</a>
+          <a class="hover:text-[var(--color-brand-blue)] transition-colors" href="#">Terms</a>
+          <a class="hover:text-[var(--color-brand-blue)] transition-colors" href="mailto:find@gtpinsurance.gr">Contact</a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- Plan Selection & Form Submission Scripts -->
+  <!-- Plan select + form submit -->
   <script is:inline>
-    let selectedPlan = '';
-
-    // Plan selection from pricing buttons
-    document.querySelectorAll('.plan-select-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
+    var selectedPlan = '';
+    document.querySelectorAll('.plan-select-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
         selectedPlan = this.getAttribute('data-plan');
-        document.getElementById('selectedPlan').textContent = 'Selected: ' + selectedPlan + ' Plan';
-        document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        var sp = document.getElementById('selectedPlan');
+        if (sp) sp.textContent = 'Discussing ' + selectedPlan;
+        var c = document.getElementById('contact');
+        if (c) c.scrollIntoView({ behavior: 'smooth' });
       });
     });
 
-    // Form submission via mailto
-    document.getElementById('demoForm').addEventListener('submit', function(event) {
-      event.preventDefault();
+    var form = document.getElementById('demoForm');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var fd = new FormData(e.target);
+        var d = {};
+        fd.forEach(function (v, k) { d[k] = v; });
 
-      var formData = new FormData(event.target);
-      var data = {};
-      formData.forEach(function(value, key) { data[key] = value; });
-
-      var subject = 'EAP Demo Request - ' + data.companyName;
-      var body = 'Hello,\n\nI would like to request a demo of your Employee Assistance Programme services.\n\nContact Details:\n- Name: ' + data.firstName + ' ' + data.lastName + '\n- Email: ' + data.workEmail + '\n- Company: ' + data.companyName + '\n' + (selectedPlan ? '- Selected Plan: ' + selectedPlan + ' Plan\n' : '') + '\n' + (data.message ? 'Message: ' + data.message + '\n' : '') + '\nPlease contact me to schedule a personalized demo.\n\nBest regards,\n' + data.firstName + ' ' + data.lastName;
-
-      var mailtoUrl = 'mailto:find@gtpinsurance.gr?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-
-      window.location.href = mailtoUrl;
-
-      event.target.reset();
-      document.getElementById('selectedPlan').textContent = '';
-      selectedPlan = '';
-    });
+        var subject = 'TELUS Health EAP — Consultation request — ' + (d.companyName || 'New enquiry');
+        var lines = [
+          'Hello GTP,',
+          '',
+          'I would like to book a consultation about the TELUS Health Employee Assistance Programme.',
+          '',
+          'Contact',
+          '  Name      : ' + (d.firstName || '') + ' ' + (d.lastName || ''),
+          '  Email     : ' + (d.workEmail || ''),
+          '  Phone     : ' + (d.phone || ''),
+          '  Role      : ' + (d.role || ''),
+          '',
+          'Company',
+          '  Name      : ' + (d.companyName || ''),
+          '  Employees : ' + (d.employees || ''),
+          '  Countries : ' + (d.countries || ''),
+          '',
+          (selectedPlan ? 'Indicative tier: ' + selectedPlan : ''),
+          '',
+          (d.message ? 'Notes: ' + d.message : ''),
+          '',
+          'Best regards,',
+          (d.firstName || '') + ' ' + (d.lastName || '')
+        ];
+        var body = lines.filter(function (l) { return l !== null; }).join('\n');
+        window.location.href = 'mailto:find@gtpinsurance.gr?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        e.target.reset();
+        var sp = document.getElementById('selectedPlan');
+        if (sp) sp.textContent = '';
+        selectedPlan = '';
+      });
+    }
   </script>
 </BaseLayout>
