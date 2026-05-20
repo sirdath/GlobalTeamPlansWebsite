@@ -22,9 +22,11 @@
 
   var defaults = {
     dots: [],
+    coverage: [],        // [{ lat, lng }] — static destination markers without arcs
     lineColor: null,
     dotColor: null,
     pulseColor: null,
+    coverageColor: null, // overrides --wm-coverage CSS var
     density: 1
   };
 
@@ -90,9 +92,10 @@
     for (var k in defaults) o[k] = defaults[k];
     if (opts) for (var k2 in opts) o[k2] = opts[k2];
 
-    if (o.dotColor)   el.style.setProperty('--wm-dot', o.dotColor);
-    if (o.lineColor)  el.style.setProperty('--wm-line', o.lineColor);
-    if (o.pulseColor) el.style.setProperty('--wm-pulse', o.pulseColor);
+    if (o.dotColor)      el.style.setProperty('--wm-dot', o.dotColor);
+    if (o.lineColor)     el.style.setProperty('--wm-line', o.lineColor);
+    if (o.pulseColor)    el.style.setProperty('--wm-pulse', o.pulseColor);
+    if (o.coverageColor) el.style.setProperty('--wm-coverage', o.coverageColor);
 
     var existing = el.querySelector('svg.wm-svg');
     if (existing) existing.remove();
@@ -128,6 +131,23 @@
           dotsG.appendChild(d);
         }
       }
+    }
+
+    // Coverage dots — static destination markers (no arc, lighter pulse)
+    if (o.coverage && o.coverage.length) {
+      var covG = document.createElementNS(SVGNS, 'g');
+      covG.setAttribute('class', 'wm-coverage-group');
+      svg.appendChild(covG);
+      o.coverage.forEach(function (p, idx) {
+        var pt = project(p.lat, p.lng, W, H);
+        var c = document.createElementNS(SVGNS, 'circle');
+        c.setAttribute('cx', pt.x.toFixed(1));
+        c.setAttribute('cy', pt.y.toFixed(1));
+        c.setAttribute('r', '2.6');
+        c.setAttribute('class', 'wm-coverage');
+        c.style.animationDelay = ((idx % 12) * 0.12) + 's';
+        covG.appendChild(c);
+      });
     }
 
     // Arcs

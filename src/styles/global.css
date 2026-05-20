@@ -554,9 +554,10 @@ select.field { appearance: none; background-image: linear-gradient(45deg, transp
    World map theming — uses brand colors
    ======================================== */
 .world-map.world-map-gtp {
-  --wm-dot:   rgba(18, 50, 74, 0.18);
-  --wm-line:  var(--color-brand-blue);
-  --wm-pulse: var(--color-brand-green);
+  --wm-dot:      rgba(18, 50, 74, 0.18);
+  --wm-line:     var(--color-brand-blue);
+  --wm-pulse:    var(--color-brand-green);
+  --wm-coverage: var(--color-brand-green);
 }
 
 /* ========================================

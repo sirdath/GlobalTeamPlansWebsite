@@ -153,7 +153,7 @@ const sources = [
         <div class="md:col-span-7" data-reveal="up" data-reveal-delay="0.15">
           <div class="world-map world-map-light world-map-gtp" id="partnership-map"></div>
           <p class="mt-4 text-[12px] text-[var(--color-ink-mute)] text-center">
-            Athens HQ &nbsp;·&nbsp; TELUS&nbsp;Health delivery network spans 180+ countries<sup class="fn-ref"><a href="#footnotes">1</a></sup>
+            TELUS&nbsp;Health delivery network &nbsp;·&nbsp; 180+ countries and territories<sup class="fn-ref"><a href="#footnotes">1</a></sup>
           </p>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10 pt-8 border-t border-[var(--color-rule)]">
@@ -181,15 +181,38 @@ const sources = [
           function start() {
             if (!window.WorldMap) return setTimeout(start, 50);
             window.WorldMap.init('#partnership-map', {
-              dots: [
-                { from: { lat: 37.98, lng: 23.72 }, to: { lat: 51.50, lng:  -0.13 } },
-                { from: { lat: 37.98, lng: 23.72 }, to: { lat: 40.71, lng: -74.00 } },
-                { from: { lat: 37.98, lng: 23.72 }, to: { lat: 43.65, lng: -79.38 } },
-                { from: { lat: 37.98, lng: 23.72 }, to: { lat:  1.35, lng: 103.82 } },
-                { from: { lat: 37.98, lng: 23.72 }, to: { lat: 25.20, lng:  55.27 } },
-                { from: { lat: 37.98, lng: 23.72 }, to: { lat:-26.20, lng:  28.04 } },
-                { from: { lat: 37.98, lng: 23.72 }, to: { lat:-33.87, lng: 151.21 } },
-              ]
+              // No arcs — clean dotted coverage map
+              dots: [],
+              // 65+ representative country/city markers across continents to convey 180-country coverage
+              coverage: [
+                // Europe
+                { lat: 48.85, lng:   2.35 }, { lat: 52.52, lng:  13.40 }, { lat: 40.42, lng:  -3.70 },
+                { lat: 41.90, lng:  12.50 }, { lat: 52.37, lng:   4.89 }, { lat: 48.21, lng:  16.37 },
+                { lat: 52.23, lng:  21.01 }, { lat: 59.33, lng:  18.07 }, { lat: 60.17, lng:  24.94 },
+                { lat: 50.85, lng:   4.35 }, { lat: 53.35, lng:  -6.26 }, { lat: 38.72, lng:  -9.14 },
+                { lat: 50.08, lng:  14.43 }, { lat: 44.43, lng:  26.10 }, { lat: 47.50, lng:  19.04 },
+                { lat: 55.68, lng:  12.57 }, { lat: 64.13, lng: -21.94 }, { lat: 41.01, lng:  28.98 },
+                { lat: 46.20, lng:   6.15 }, { lat: 47.37, lng:   8.55 },
+                // Americas
+                { lat: 49.28, lng:-123.12 }, { lat: 37.77, lng:-122.42 }, { lat: 41.88, lng: -87.63 },
+                { lat: 25.76, lng: -80.19 }, { lat: 19.43, lng: -99.13 }, { lat:  4.71, lng: -74.07 },
+                { lat:-12.05, lng: -77.04 }, { lat:-34.61, lng: -58.38 }, { lat:-23.55, lng: -46.63 },
+                { lat:-22.91, lng: -43.17 }, { lat:-33.45, lng: -70.67 }, { lat:  9.93, lng: -84.08 },
+                { lat: 45.42, lng: -75.70 }, { lat: 14.63, lng: -90.51 },
+                // Asia
+                { lat: 35.68, lng: 139.69 }, { lat: 39.90, lng: 116.41 }, { lat: 31.23, lng: 121.47 },
+                { lat: 37.57, lng: 126.98 }, { lat: 22.32, lng: 114.17 }, { lat: 13.76, lng: 100.50 },
+                { lat: -6.21, lng: 106.85 }, { lat: 19.08, lng:  72.88 }, { lat: 28.61, lng:  77.21 },
+                { lat: 14.60, lng: 120.98 }, { lat:  3.14, lng: 101.69 }, { lat: 23.81, lng:  90.41 },
+                { lat: 24.86, lng:  67.01 }, { lat: 10.82, lng: 106.63 }, { lat: 25.03, lng: 121.57 },
+                // Middle East / Africa
+                { lat: 24.71, lng:  46.68 }, { lat: 32.08, lng:  34.78 }, { lat: 30.04, lng:  31.24 },
+                { lat: -1.29, lng:  36.82 }, { lat:  6.52, lng:   3.38 }, { lat: 33.57, lng:  -7.59 },
+                { lat: 36.81, lng:  10.18 }, { lat: 30.06, lng:  31.25 }, { lat: -3.37, lng:  29.36 },
+                { lat: -8.84, lng:  13.23 },
+                // Oceania
+                { lat:-37.81, lng: 144.96 }, { lat:-36.85, lng: 174.76 },
+              ],
             });
           }
           if (document.readyState !== 'loading') start();
@@ -268,63 +291,40 @@ const sources = [
     </section>
 
     <!-- ============================================================
-         WHY GTP — navy section, three pillars with tri-color bars
+         WHY GTP — white bg, navy text, brand-tinted cards
          ============================================================ -->
-    <section id="why" class="section section-navy">
+    <section id="why" class="section section-white section-brand-top stripe-tri">
       <div class="container-prose">
         <div class="max-w-2xl mb-14" data-reveal="up">
-          <SectionEyebrow label="Why Global Team Plans" accent="onNavy" withMark={true} class="seye-lg" />
-          <h2 data-split class="text-[clamp(2rem,3.5vw,3.25rem)] leading-[1.05] tracking-[-0.02em]">
+          <SectionEyebrow label="Why Global Team Plans" accent="navy" withMark={true} class="seye-lg" />
+          <h2 data-split class="text-[clamp(2rem,3.5vw,3.25rem)] leading-[1.05] tracking-[-0.02em]" style="color: var(--color-navy);">
             A calm, trustworthy partner — for people who take wellbeing seriously.
           </h2>
         </div>
 
         <div class="grid md:grid-cols-3 gap-6" data-reveal-stagger>
           {whyGtp.map((p, i) => {
-            const Ico = p.icon;
-            // Per-pillar palette: fill, border, icon-bg, icon-color, rail
-            const theme = p.bar === 'blue' ? {
-              fill:    '#0E4F70',
-              border:  '1px solid rgba(79, 162, 201, 0.55)',
-              iconBg:  'rgba(255, 255, 255, 0.12)',
-              iconCol: '#9DD3EA',
-              rail:    'var(--color-brand-blue-soft)',
-            } : p.bar === 'green' ? {
-              fill:    '#1E6B3A',
-              border:  '1px solid rgba(102, 197, 134, 0.55)',
-              iconBg:  'rgba(255, 255, 255, 0.12)',
-              iconCol: '#BFE7CD',
-              rail:    'var(--color-brand-green)',
-            } : {
-              fill:    '#7A5A0F',
-              border:  '1px solid rgba(242, 197, 71, 0.55)',
-              iconBg:  'rgba(255, 255, 255, 0.12)',
-              iconCol: '#FAE4A1',
-              rail:    'var(--color-brand-gold)',
-            };
+            const Ico        = p.icon;
+            const accent     = p.bar;
+            const iconClass  = `icon-square icon-square-${accent}`;
+            const underClass = `under-brand under-${accent}`;
+            const topClass   = `accent-top-${accent}`;
             return (
               <div
-                class="why-card relative rounded-2xl p-7 md:p-8 h-full flex flex-col"
+                class={`card-soft is-${accent} ${topClass} h-full flex flex-col`}
                 data-tilt
                 data-tilt-max="3"
-                style={`background: ${theme.fill}; border: ${theme.border}; box-shadow: 0 20px 44px -22px rgba(0,0,0,0.55);`}
               >
-                <span
-                  class="inline-flex items-center justify-center w-12 h-12 rounded-xl"
-                  style={`background: ${theme.iconBg}; color: ${theme.iconCol}; border: 1px solid rgba(255,255,255,0.18);`}
-                >
-                  <Ico size={24} strokeWidth={1.75} />
-                </span>
-                <div class="mt-6 h-[3px] w-12 rounded-sm" style={`background: ${theme.rail};`}></div>
-                <h3 class="mt-5 text-[1.35rem] tracking-tight" style="color: #FFFFFF;">{p.title}</h3>
-                <p class="mt-3 text-[15px] leading-relaxed" style="color: rgba(245,248,250,0.85);">{p.body}</p>
+                <span class={iconClass}><Ico size={24} strokeWidth={1.75} /></span>
+                <h3 class={`mt-5 text-[1.35rem] tracking-tight inline-block self-start ${underClass}`} style="color: var(--color-navy);">{p.title}</h3>
+                <p class="mt-4 text-[15px] leading-relaxed text-[var(--color-ink-soft)]">{p.body}</p>
               </div>
             );
           })}
         </div>
 
         <!-- Tri-colour rail -->
-        <div class="mt-16 flex items-center gap-4 text-[12px]" style="color: rgba(245,248,250,0.55);">
+        <div class="mt-16 flex items-center gap-4 text-[12px] text-[var(--color-ink-mute)]">
           <span class="tri-rule"><span class="b1"></span><span class="b2"></span><span class="b3"></span></span>
           <span class="uppercase tracking-[0.18em]">Global &nbsp;·&nbsp; Team &nbsp;·&nbsp; Plans</span>
         </div>

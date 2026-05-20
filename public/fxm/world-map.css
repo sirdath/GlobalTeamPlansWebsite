@@ -22,6 +22,7 @@
   --wm-dot: rgba(255, 255, 255, 0.22);
   --wm-line: #818cf8;
   --wm-pulse: #c084fc;
+  --wm-coverage: #818cf8;
   position: relative;
   width: 100%;
   aspect-ratio: 2.05 / 1;
@@ -62,6 +63,19 @@
 
 .world-map .wm-pulse-to { animation-delay: 0.8s; }
 
+.world-map .wm-coverage {
+  fill: var(--wm-coverage);
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(0 0 3px var(--wm-coverage));
+  animation: wm-coverage-pulse 3.2s ease-in-out infinite;
+}
+
+@keyframes wm-coverage-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.3); }
+}
+
 @keyframes wm-draw {
   to { stroke-dashoffset: 0; }
 }
@@ -84,5 +98,6 @@
 @media (prefers-reduced-motion: reduce) {
   .world-map .wm-line { animation: none; stroke-dashoffset: 0; }
   .world-map .wm-pulse-from,
-  .world-map .wm-pulse-to { animation: none; }
+  .world-map .wm-pulse-to,
+  .world-map .wm-coverage { animation: none; }
 }
