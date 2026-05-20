@@ -6,7 +6,7 @@
 
   <!-- Three solid-color vertical lanes (car-lane sharp edges): blue | green | gold.
        Bottom is aligned via JS to stop exactly at the top of #heroStats. -->
-  <div id="heroLanes" aria-hidden class="absolute inset-x-0 pointer-events-none" style="top: 80px; bottom: 200px; background: linear-gradient(
+  <div id="heroLanes" aria-hidden class="absolute inset-x-0 pointer-events-none" style="top: 80px; bottom: 40%; background: linear-gradient(
     90deg,
     rgba(0,   94, 130, 0.42) 0%,
     rgba(0,   94, 130, 0.42) 33.33%,
@@ -21,8 +21,10 @@
     <!-- Partner mark -->
     <div class="flex flex-wrap items-center gap-3 mb-8" id="heroPartner">
       <span class="tag-green">Certified Partner Agency</span>
-      <span class="text-[11px] uppercase tracking-[0.18em] text-[var(--color-ink-mute)]">In partnership with</span>
-      <span class="text-[15px] tracking-tight font-semibold" style="color: var(--color-brand-blue);">TELUS&nbsp;Health</span>
+      <span class="text-[11px] uppercase tracking-[0.18em] text-[var(--color-ink-mute)] whitespace-nowrap">
+        In partnership with
+        <span class="ml-2 text-[15px] tracking-tight font-semibold normal-case" style="color: var(--color-brand-blue); letter-spacing: -0.01em;">TELUS&nbsp;Health</span>
+      </span>
     </div>
 
     <!-- Headline (SplitText words) -->
@@ -114,19 +116,29 @@
 
       // Align the brand lanes so their bottom edge sits exactly at the
       // top of the stats divider line (the border-t on #heroStats).
+      // Debounced — handles orientationchange and iOS visualViewport (keyboard).
+      var alignRaf = null;
       function alignLanes() {
-        var lanes = document.getElementById('heroLanes');
-        var stats = document.getElementById('heroStats');
-        var hero  = document.getElementById('hero');
-        if (!lanes || !stats || !hero) return;
-        var heroBottom = hero.getBoundingClientRect().bottom;
-        var statsTop   = stats.getBoundingClientRect().top;
-        var offset = Math.max(0, heroBottom - statsTop);
-        lanes.style.bottom = offset + 'px';
+        if (alignRaf) return;
+        alignRaf = requestAnimationFrame(function () {
+          alignRaf = null;
+          var lanes = document.getElementById('heroLanes');
+          var stats = document.getElementById('heroStats');
+          var hero  = document.getElementById('hero');
+          if (!lanes || !stats || !hero) return;
+          var heroBottom = hero.getBoundingClientRect().bottom;
+          var statsTop   = stats.getBoundingClientRect().top;
+          var offset = Math.max(0, heroBottom - statsTop);
+          lanes.style.bottom = offset + 'px';
+        });
       }
       alignLanes();
-      window.addEventListener('resize', alignLanes);
-      window.addEventListener('load', alignLanes);
+      window.addEventListener('resize',           alignLanes, { passive: true });
+      window.addEventListener('orientationchange', alignLanes, { passive: true });
+      window.addEventListener('load',             alignLanes);
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', alignLanes, { passive: true });
+      }
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(alignLanes);
     }
     if (document.readyState !== 'loading') start();

@@ -210,10 +210,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         });
 
         // ──────────────────────────────────────────────────────────
-        // [data-tilt] — soft pointer-tracked 3D tilt on cards
+        // [data-tilt] — soft pointer-tracked 3D tilt on cards.
+        // SKIP on touch devices: iOS Safari fires pointermove on tap
+        // and leaves the card rotated until next tap. Mouse-only.
         // ──────────────────────────────────────────────────────────
+        var fineHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
         gsap.utils.toArray('[data-tilt]').forEach(function (card) {
-          if (reduced) return;
+          if (reduced || !fineHover) return;
           var max = parseFloat(card.dataset.tiltMax || '6');
           card.style.transformStyle = 'preserve-3d';
           card.style.transformPerspective = '1000px';

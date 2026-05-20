@@ -47,12 +47,14 @@ const navLinks = [
         </a>
       </div>
 
-      <!-- Mobile hamburger -->
+      <!-- Mobile hamburger (44×44 tap target per Apple HIG) -->
       <button
         id="mobileMenuBtn"
-        class="md:hidden relative w-10 h-10 flex items-center justify-center"
+        class="md:hidden relative w-11 h-11 flex items-center justify-center -mr-2"
         aria-label="Toggle navigation menu"
+        aria-controls="mobileMenu"
         aria-expanded="false"
+        type="button"
       >
         <div class="space-y-[5px]" id="hamburgerIcon">
           <span class="block w-6 h-[2px] rounded-full bg-[var(--color-navy)] transition-all duration-300 origin-center"></span>
@@ -64,10 +66,14 @@ const navLinks = [
 
   <hr class="rule" id="navRule" style="opacity:0;transition:opacity .25s ease" />
 
-  <!-- Mobile menu -->
+  <!-- Mobile menu (safe-area aware) -->
   <div
     id="mobileMenu"
-    class="fixed inset-0 bg-white z-40 flex flex-col items-start justify-start gap-3 pt-28 px-6 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"
+    class="fixed inset-0 bg-white z-40 flex flex-col items-start justify-start gap-3 px-6 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"
+    style="padding-top: calc(6rem + env(safe-area-inset-top));"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Site navigation"
   >
     {navLinks.map(link => (
       <a
@@ -126,6 +132,13 @@ const navLinks = [
 
   mobileNavLinks.forEach(link => link.addEventListener('click', () => { if (isMenuOpen) toggleMenu(); }));
   mobileMenuBtn.addEventListener('click', toggleMenu);
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isMenuOpen) {
+      toggleMenu();
+      mobileMenuBtn.focus();
+    }
+  });
   window.addEventListener('scroll', handleScroll, { passive: true });
   handleScroll();
 </script>

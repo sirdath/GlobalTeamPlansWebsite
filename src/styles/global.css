@@ -534,10 +534,11 @@ sup.fn-ref a {
   background: #FFFFFF;
   border: 1px solid var(--color-rule);
   border-radius: 8px;
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1rem;
+  min-height: 44px;
   color: var(--color-navy);
   font-family: inherit;
-  font-size: 15px;
+  font-size: 16px;          /* 16px prevents iOS zoom on focus */
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -592,4 +593,190 @@ select.field { appearance: none; background-image: linear-gradient(45deg, transp
     scroll-behavior: auto !important;
   }
   .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ========================================
+   MOBILE / TOUCH OPTIMISATIONS
+   - Wrap hover effects so they don't latch on iOS Safari after tap
+   - Tighten section padding so the page doesn't scroll forever
+   - Dim hero lanes on small screens so the headline always reads
+   - Shrink Programme number ghost on narrow cards
+   ======================================== */
+
+/* Touch / no-hover: kill all hover-only effects (sticky-hover risk on iOS) */
+@media (hover: none), (pointer: coarse) {
+  .card-soft:hover,
+  .why-card:hover {
+    transform: none !important;
+    box-shadow: 0 8px 28px rgba(18, 50, 74, 0.06) !important;
+    border-color: var(--color-rule) !important;
+  }
+  .btn-primary:hover   { background: var(--color-brand-blue) !important; box-shadow: 0 1px 0 rgba(0,73,106,0.18), 0 2px 12px rgba(0,94,130,0.18) !important; }
+  .btn-secondary:hover { background: #FFFFFF !important; color: var(--color-navy) !important; border-color: var(--color-rule) !important; }
+  .btn-text:hover      { color: var(--color-brand-green-dark) !important; gap: 0.4rem !important; }
+  .btn-arrow           { transform: none !important; }
+  a.link-underline:hover { color: var(--color-brand-blue) !important; opacity: 1 !important; }
+}
+
+/* Tighter section padding on small screens */
+@media (max-width: 640px) {
+  .section { padding-block: 3rem; }
+  .container-prose { padding-inline: 1.25rem; }
+}
+
+/* Hero: dim the brand lanes on small screens so they don't clash with text */
+@media (max-width: 768px) {
+  #heroLanes { opacity: 0.55; }
+  /* Hide the brand-color stripe stutter on every non-tri section transition */
+  .section-brand-top:not(.stripe-tri)::before { display: none; }
+}
+
+/* Programme: shrink the number ghost on small viewports */
+@media (max-width: 640px) {
+  article.card-soft > span[aria-hidden][style*="font-size: 3.25rem"] {
+    font-size: 2.25rem !important;
+    opacity: 0.10 !important;
+  }
+}
+
+/* Tap targets: ensure btn-text + tag chips clear 44px */
+.btn-text { min-height: 44px; align-items: center; }
+.tag-blue, .tag-green, .tag-gold, .tag-amber { min-height: 22px; }
+
+/* ========================================
+   Programme tabs (the redesigned section)
+   ======================================== */
+.prog-tablist {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--color-rule);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+}
+.prog-tablist::-webkit-scrollbar { display: none; }
+.prog-tablist { scrollbar-width: none; }
+
+.prog-tab {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1.1rem;
+  background: transparent;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  color: var(--color-ink-mute);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.3s ease, background 0.2s ease;
+  min-height: 44px;
+  border-radius: 8px 8px 0 0;
+}
+.prog-tab .prog-tab-num {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: inherit;
+  opacity: 0.7;
+}
+.prog-tab .prog-tab-label {
+  letter-spacing: -0.005em;
+}
+.prog-tab:hover {
+  color: var(--color-navy);
+  background: rgba(18, 50, 74, 0.04);
+}
+.prog-tab.is-active            { color: var(--color-navy); }
+.prog-tab.is-active.prog-tab-blue  { border-bottom-color: var(--color-brand-blue); }
+.prog-tab.is-active.prog-tab-green { border-bottom-color: var(--color-brand-green); }
+.prog-tab.is-active.prog-tab-gold  { border-bottom-color: var(--color-brand-gold); }
+.prog-tab:focus-visible {
+  outline: 2px solid var(--color-brand-blue);
+  outline-offset: 2px;
+}
+
+.prog-panel {
+  --panel-accent: var(--color-brand-blue);
+  background: #FFFFFF;
+  border: 1px solid var(--color-rule);
+  border-bottom: 4px solid var(--panel-accent);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 28px rgba(18, 50, 74, 0.04);
+  min-height: 340px;
+  transition: border-color 0.4s ease;
+}
+.prog-panel-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+.prog-panel-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-width: 110px;
+}
+.prog-iconbox {
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 12px;
+}
+.prog-bignum {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  letter-spacing: -0.04em;
+  line-height: 0.85;
+  color: var(--color-brand-blue);
+}
+.prog-panel-body { min-width: 0; }
+.prog-title {
+  display: inline-block;
+  font-size: clamp(1.3rem, 2vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: -0.012em;
+  color: var(--color-navy);
+}
+.prog-body {
+  margin-top: 1rem;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+.prog-key {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-rule);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 13px;
+  color: var(--color-ink-mute);
+  line-height: 1.45;
+}
+.prog-key-bar {
+  display: inline-block;
+  width: 14px;
+  height: 2px;
+  margin-top: 7px;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .prog-panel { padding: 1.5rem; min-height: 280px; }
+  .prog-panel-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .prog-panel-rail { flex-direction: row; align-items: center; min-width: 0; gap: 1rem; }
+  .prog-bignum { font-size: 2.75rem; }
+  .prog-iconbox { width: 48px !important; height: 48px !important; }
 }

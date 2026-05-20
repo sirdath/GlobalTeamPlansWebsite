@@ -236,58 +236,154 @@ const sources = [
           </p>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" data-reveal-stagger>
+        <!-- Tab list — horizontally scrollable on mobile -->
+        <div class="prog-tablist" role="tablist" aria-label="Programme components">
           {programme.map((item, i) => {
-            const Icon   = programmeIcons[item.visual];
             const accent = programmeAccents[i];
-            const isClass     = `is-${accent}`;
-            const accentClass = `accent-top-${accent}`;
-            const iconClass   = `icon-square icon-square-${accent}`;
-            const numClass    = accent === 'blue'  ? 'text-[var(--color-brand-blue)]'
-                              : accent === 'green' ? 'text-[var(--color-brand-green-dark)]'
-                              :                      'text-[var(--color-brand-gold-dark)]';
-            const underClass  = `under-brand under-${accent}`;
             return (
-              <article
-                class={`card-soft ${isClass} ${accentClass} flex flex-col h-full relative overflow-hidden`}
-                data-tilt
-                data-tilt-max="4"
-                style="padding: 1.85rem;"
+              <button
+                type="button"
+                role="tab"
+                id={`prog-tab-${i}`}
+                aria-controls="prog-panel"
+                aria-selected={i === 0 ? 'true' : 'false'}
+                tabindex={i === 0 ? '0' : '-1'}
+                class={`prog-tab prog-tab-${accent}`}
+                data-prog-tab={i}
               >
-                <!-- Big editorial numeral, top right -->
-                <span
-                  aria-hidden
-                  class={`absolute top-3 right-5 font-bold tracking-tight pointer-events-none ${numClass}`}
-                  style="font-size: 3.25rem; line-height: 1; opacity: 0.18;"
-                >
-                  {item.num}
-                </span>
+                <span class="prog-tab-num">{item.num}</span>
+                <span class="prog-tab-label">{item.title.split(' ').slice(0, 2).join(' ').replace(/[,&]$/, '')}</span>
+              </button>
+            );
+          })}
+        </div>
 
-                <!-- Icon -->
-                <span class={iconClass}>
-                  <Icon size={22} strokeWidth={1.75} />
-                </span>
+        <!-- Animated detail panel -->
+        <div
+          id="prog-panel"
+          role="tabpanel"
+          aria-labelledby="prog-tab-0"
+          class="prog-panel"
+        >
+          <div class="prog-panel-grid">
+            <!-- Left rail: icon + big editorial number -->
+            <div class="prog-panel-rail">
+              <span id="progIconBox" class="icon-square icon-square-blue prog-iconbox">
+                <!-- Icon swapped via JS -->
+              </span>
+              <div class="prog-bignum" id="progBigNum">01</div>
+            </div>
+            <!-- Right column: title, body, key-fact -->
+            <div class="prog-panel-body">
+              <h3 id="progTitle" class="prog-title under-brand under-blue">
+                {programme[0].title}
+              </h3>
+              <p id="progBody" class="prog-body">{programme[0].body}</p>
+              <div class="prog-key">
+                <span id="progKeyBar" class="prog-key-bar" style="background: var(--color-brand-blue);"></span>
+                <span id="progKey">{programme[0].key}</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                <!-- Title with brand underline -->
-                <h3 class={`mt-5 text-[1.2rem] leading-[1.25] tracking-tight inline-block self-start ${underClass}`}>
-                  {item.title}
-                </h3>
-
-                <!-- Body -->
-                <p class="mt-3 text-[14.5px] leading-[1.55] text-[var(--color-ink-soft)] flex-grow">
-                  {item.body}
-                </p>
-
-                <!-- Key fact strip -->
-                <div class="mt-6 pt-4 border-t border-[var(--color-rule)] flex items-start gap-2 text-[12px] leading-snug text-[var(--color-ink-mute)]">
-                  <span class={`block w-3 h-[2px] mt-[7px] rounded-sm`} style={`background: var(--color-brand-${accent === 'gold' ? 'gold' : accent});`}></span>
-                  <span>{item.key}</span>
-                </div>
-              </article>
+        <!-- Data island for JS (icons rendered server-side, JS clones them) -->
+        <div hidden id="progIconStore">
+          {programme.map((item, i) => {
+            const Icon = programmeIcons[item.visual];
+            return (
+              <span data-icon-for={i}><Icon size={28} strokeWidth={1.75} /></span>
             );
           })}
         </div>
       </div>
+
+      <script is:inline define:vars={{ programme, programmeAccents }}>
+        (function () {
+          var TABS_DATA = programme.map(function (p, i) { return { num: p.num, title: p.title, body: p.body, key: p.key, accent: programmeAccents[i] }; });
+          var iconStore = document.getElementById('progIconStore');
+          var iconBox   = document.getElementById('progIconBox');
+          var bigNum    = document.getElementById('progBigNum');
+          var titleEl   = document.getElementById('progTitle');
+          var bodyEl    = document.getElementById('progBody');
+          var keyEl     = document.getElementById('progKey');
+          var keyBar    = document.getElementById('progKeyBar');
+          var panel     = document.getElementById('prog-panel');
+          var tabs      = document.querySelectorAll('.prog-tab');
+
+          var ACCENT_COLOR = {
+            blue:  'var(--color-brand-blue)',
+            green: 'var(--color-brand-green)',
+            gold:  'var(--color-brand-gold)',
+          };
+
+          function setIcon(i) {
+            var src = iconStore.querySelector('[data-icon-for="' + i + '"]');
+            if (!src) return;
+            iconBox.innerHTML = src.innerHTML;
+          }
+
+          function setAccent(accent) {
+            iconBox.className = 'icon-square icon-square-' + accent + ' prog-iconbox';
+            bigNum.style.color  = ACCENT_COLOR[accent];
+            titleEl.className   = 'prog-title under-brand under-' + accent;
+            keyBar.style.background = ACCENT_COLOR[accent];
+            // animated brand-color bottom border on panel
+            panel.style.setProperty('--panel-accent', ACCENT_COLOR[accent]);
+          }
+
+          var current = 0;
+          function activate(i, opts) {
+            opts = opts || {};
+            if (i === current && !opts.force) return;
+            var data = TABS_DATA[i];
+            tabs.forEach(function (t, j) {
+              t.setAttribute('aria-selected', j === i ? 'true' : 'false');
+              t.setAttribute('tabindex', j === i ? '0' : '-1');
+              t.classList.toggle('is-active', j === i);
+            });
+            current = i;
+
+            // GSAP morph if available; otherwise instant
+            if (window.gsap) {
+              var tl = window.gsap.timeline();
+              tl.to([titleEl, bodyEl, keyEl, iconBox, bigNum], { opacity: 0, y: 6, duration: 0.18, ease: 'power2.in', stagger: 0.02 })
+                .add(function () {
+                  bigNum.textContent  = data.num;
+                  titleEl.textContent = data.title;
+                  bodyEl.textContent  = data.body;
+                  keyEl.textContent   = data.key;
+                  setIcon(i);
+                  setAccent(data.accent);
+                })
+                .fromTo([titleEl, bodyEl, keyEl, iconBox, bigNum], { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power3.out', stagger: 0.04 });
+            } else {
+              bigNum.textContent  = data.num;
+              titleEl.textContent = data.title;
+              bodyEl.textContent  = data.body;
+              keyEl.textContent   = data.key;
+              setIcon(i);
+              setAccent(data.accent);
+            }
+          }
+
+          // Wire clicks
+          tabs.forEach(function (tab, i) {
+            tab.addEventListener('click', function () { activate(i); });
+            // Arrow-key nav per WAI-ARIA tabs pattern
+            tab.addEventListener('keydown', function (e) {
+              var n = tabs.length;
+              if (e.key === 'ArrowRight') { var ni = (i + 1) % n; tabs[ni].focus(); activate(ni); e.preventDefault(); }
+              if (e.key === 'ArrowLeft')  { var ni = (i - 1 + n) % n; tabs[ni].focus(); activate(ni); e.preventDefault(); }
+              if (e.key === 'Home')       { tabs[0].focus(); activate(0); e.preventDefault(); }
+              if (e.key === 'End')        { tabs[n-1].focus(); activate(n-1); e.preventDefault(); }
+            });
+          });
+
+          // Initial paint
+          activate(0, { force: true });
+        })();
+      </script>
     </section>
 
     <!-- ============================================================
@@ -547,33 +643,33 @@ const sources = [
           <div id="selectedPlan" class="eyebrow eyebrow-blue mb-6" style="min-height: 1em;"></div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-2">
-            <label class="block">
+            <label class="block" for="f-firstName">
               <span class="eyebrow eyebrow-mute block mb-2">First name</span>
-              <input type="text" name="firstName" required class="field" placeholder="Maria" />
+              <input id="f-firstName" type="text" name="firstName" required class="field" placeholder="Maria" autocomplete="given-name" enterkeyhint="next" />
             </label>
-            <label class="block">
+            <label class="block" for="f-lastName">
               <span class="eyebrow eyebrow-mute block mb-2">Last name</span>
-              <input type="text" name="lastName" required class="field" placeholder="Papadopoulos" />
+              <input id="f-lastName" type="text" name="lastName" required class="field" placeholder="Papadopoulos" autocomplete="family-name" enterkeyhint="next" />
             </label>
-            <label class="block">
+            <label class="block" for="f-workEmail">
               <span class="eyebrow eyebrow-mute block mb-2">Work email</span>
-              <input type="email" name="workEmail" required class="field" placeholder="m.papadopoulos@acme.com" />
+              <input id="f-workEmail" type="email" name="workEmail" required class="field" placeholder="m.papadopoulos@acme.com" autocomplete="email" inputmode="email" enterkeyhint="next" />
             </label>
-            <label class="block">
+            <label class="block" for="f-phone">
               <span class="eyebrow eyebrow-mute block mb-2">Direct phone</span>
-              <input type="tel" name="phone" class="field" placeholder="+30 ..." />
+              <input id="f-phone" type="tel" name="phone" class="field" placeholder="+30 ..." autocomplete="tel" inputmode="tel" enterkeyhint="next" />
             </label>
-            <label class="block">
+            <label class="block" for="f-companyName">
               <span class="eyebrow eyebrow-mute block mb-2">Company</span>
-              <input type="text" name="companyName" required class="field" placeholder="Acme Industries" />
+              <input id="f-companyName" type="text" name="companyName" required class="field" placeholder="Acme Industries" autocomplete="organization" enterkeyhint="next" />
             </label>
-            <label class="block">
+            <label class="block" for="f-role">
               <span class="eyebrow eyebrow-mute block mb-2">Role</span>
-              <input type="text" name="role" class="field" placeholder="Head of Reward / People" />
+              <input id="f-role" type="text" name="role" class="field" placeholder="Head of Reward / People" autocomplete="organization-title" enterkeyhint="next" />
             </label>
-            <label class="block">
+            <label class="block" for="f-employees">
               <span class="eyebrow eyebrow-mute block mb-2">Employees in scope</span>
-              <select name="employees" class="field">
+              <select id="f-employees" name="employees" class="field">
                 <option value="">Select range</option>
                 <option>Up to 250</option>
                 <option>250 – 1,000</option>
@@ -582,15 +678,15 @@ const sources = [
                 <option>10,000+</option>
               </select>
             </label>
-            <label class="block">
+            <label class="block" for="f-countries">
               <span class="eyebrow eyebrow-mute block mb-2">Countries in scope</span>
-              <input type="text" name="countries" class="field" placeholder="e.g. Greece, Germany, UAE" />
+              <input id="f-countries" type="text" name="countries" class="field" placeholder="e.g. Greece, Germany, UAE" autocomplete="off" enterkeyhint="next" />
             </label>
           </div>
 
-          <label class="block mt-6">
+          <label class="block mt-6" for="f-message">
             <span class="eyebrow eyebrow-mute block mb-2">Anything we should know?</span>
-            <textarea name="message" rows="3" class="field" placeholder="Current incumbent, renewal date, regional risks, integrations needed…"></textarea>
+            <textarea id="f-message" name="message" rows="3" class="field" placeholder="Current incumbent, renewal date, regional risks, integrations needed…" enterkeyhint="send"></textarea>
           </label>
 
           <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
