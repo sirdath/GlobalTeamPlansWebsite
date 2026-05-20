@@ -1,183 +1,130 @@
 ---
 const navLinks = [
-  { label: 'Services', href: '#services' },
-  { label: 'Results', href: '#results' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Programme',    href: '#programme' },
+  { label: 'Evidence',     href: '#evidence' },
+  { label: 'Governance',   href: '#governance' },
+  { label: 'Pricing',      href: '#pricing' },
 ];
 ---
 
-<a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-teal focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">
+<a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-[var(--color-ink)] focus:text-[var(--color-paper)] focus:px-4 focus:py-2">
   Skip to content
 </a>
 
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" aria-label="Main navigation">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16 md:h-20" id="navInner">
-      <!-- Logo -->
-      <a href="/" class="flex items-center gap-3 group">
-        <div class="w-9 h-9 rounded-xl bg-teal/10 border border-teal/20 flex items-center justify-center transition-all duration-300 group-hover:border-teal/50">
-          <svg class="w-5 h-5 text-teal" viewBox="0 0 100 100" fill="none">
-            <circle cx="50" cy="50" r="35" stroke="currentColor" stroke-width="6"/>
-            <ellipse cx="50" cy="50" rx="18" ry="35" stroke="currentColor" stroke-width="6"/>
-          </svg>
-        </div>
-        <span class="text-base font-bold text-white/90 tracking-tight group-hover:text-white transition-colors">Global Team Plans</span>
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50" aria-label="Main navigation">
+  <div class="container-prose">
+    <div class="flex items-center justify-between h-20 md:h-24" id="navInner">
+      <!-- Logo wordmark -->
+      <a href="/" class="flex items-center gap-3 group" aria-label="Global Team Plans — home">
+        <img
+          src="/logo.png"
+          alt="Global Team Plans"
+          width="320"
+          height="72"
+          class="h-12 md:h-16 w-auto select-none"
+          draggable="false"
+        />
       </a>
 
-      <!-- Desktop Links -->
-      <div class="hidden md:flex items-center gap-10">
+      <!-- Desktop links -->
+      <div class="hidden md:flex items-center gap-9">
         {navLinks.map(link => (
           <a
             href={link.href}
-            class="text-[13px] font-semibold text-slate-400 hover:text-white transition-colors duration-300 relative group/link"
+            class="text-[14px] font-semibold text-[var(--color-navy)] hover:text-[var(--color-brand-blue)] transition-colors relative group/link"
           >
             {link.label}
-            <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-teal transition-all duration-300 group-hover/link:w-full"></span>
+            <span class="absolute -bottom-2 left-0 w-0 h-[2px] bg-[var(--color-brand-blue)] transition-all duration-300 group-hover/link:w-full"></span>
           </a>
         ))}
       </div>
 
-      <!-- CTA Button -->
+      <!-- CTA -->
       <div class="hidden md:block">
-        <a
-          href="#contact"
-          class="bg-teal hover:bg-teal-dark text-white px-5 py-2.5 rounded-xl text-[13px] font-bold transition-all duration-300 shadow-lg shadow-teal/10 hover:scale-105"
-        >
-          Book Demo
+        <a href="#contact" class="btn-primary">
+          Book a consultation
+          <span aria-hidden>→</span>
         </a>
       </div>
 
-      <!-- Mobile Hamburger -->
+      <!-- Mobile hamburger -->
       <button
         id="mobileMenuBtn"
         class="md:hidden relative w-10 h-10 flex items-center justify-center"
         aria-label="Toggle navigation menu"
         aria-expanded="false"
       >
-        <div class="space-y-1.5" id="hamburgerIcon">
-          <span class="block w-6 h-0.5 bg-white transition-all duration-300 origin-center"></span>
-          <span class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
-          <span class="block w-6 h-0.5 bg-white transition-all duration-300 origin-center"></span>
+        <div class="space-y-[5px]" id="hamburgerIcon">
+          <span class="block w-6 h-[2px] rounded-full bg-[var(--color-navy)] transition-all duration-300 origin-center"></span>
+          <span class="block w-6 h-[2px] rounded-full bg-[var(--color-navy)] transition-all duration-300"></span>
         </div>
       </button>
     </div>
   </div>
 
-  <!-- Mobile Menu Overlay -->
+  <hr class="rule" id="navRule" style="opacity:0;transition:opacity .25s ease" />
+
+  <!-- Mobile menu -->
   <div
     id="mobileMenu"
-    class="fixed inset-0 bg-brand-bg/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center gap-8 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"
+    class="fixed inset-0 bg-white z-40 flex flex-col items-start justify-start gap-3 pt-28 px-6 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"
   >
-    {navLinks.map((link, i) => (
+    {navLinks.map(link => (
       <a
         href={link.href}
-        class="mobile-nav-link text-2xl font-semibold text-white hover:text-teal transition-colors duration-200 translate-y-4 opacity-0"
-        style={`transition-delay: ${i * 75}ms`}
+        class="mobile-nav-link text-3xl font-bold text-[var(--color-navy)] hover:text-[var(--color-brand-blue)] transition-colors"
       >
         {link.label}
       </a>
     ))}
-    <a
-      href="#contact"
-      class="mobile-nav-link bg-teal hover:bg-teal-dark text-white px-8 py-3 rounded-lg text-lg font-semibold transition-all duration-300 translate-y-4 opacity-0"
-      style={`transition-delay: ${navLinks.length * 75}ms`}
-    >
-      Get Demo
-    </a>
+    <a href="#contact" class="mobile-nav-link mt-8 btn-primary">Book a consultation</a>
   </div>
 </nav>
 
 <script>
   const navbar = document.getElementById('navbar')!;
-  const navInner = document.getElementById('navInner')!;
+  const navRule = document.getElementById('navRule')!;
   const mobileMenuBtn = document.getElementById('mobileMenuBtn')!;
   const mobileMenu = document.getElementById('mobileMenu')!;
-  const hamburgerSpans = document.querySelectorAll('#hamburgerIcon span');
-  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+  const hamburgerSpans = document.querySelectorAll<HTMLSpanElement>('#hamburgerIcon span');
+  const mobileNavLinks = document.querySelectorAll<HTMLElement>('.mobile-nav-link');
 
-  let lastScrollY = 0;
   let isMenuOpen = false;
 
-  // Scroll behavior: blur bg + shrink + hide/show
   function handleScroll() {
-    const scrollY = window.scrollY;
-
-    // Add/remove background
-    if (scrollY > 50) {
-      navbar.style.background = 'rgba(10, 15, 28, 0.85)';
-      navbar.style.backdropFilter = 'blur(16px)';
-      navbar.style.webkitBackdropFilter = 'blur(16px)';
-      navbar.style.borderBottom = '1px solid rgba(255, 255, 255, 0.05)';
+    const y = window.scrollY;
+    if (y > 24) {
+      navbar.style.background = 'rgba(255, 255, 255, 0.92)';
+      navbar.style.backdropFilter = 'saturate(140%) blur(8px)';
+      (navbar.style as any).webkitBackdropFilter = 'saturate(140%) blur(8px)';
+      navRule.style.opacity = '1';
     } else {
       navbar.style.background = 'transparent';
       navbar.style.backdropFilter = 'none';
-      navbar.style.webkitBackdropFilter = 'none';
-      navbar.style.borderBottom = 'none';
+      (navbar.style as any).webkitBackdropFilter = 'none';
+      navRule.style.opacity = '0';
     }
-
-    // Shrink on scroll
-    if (scrollY > 200) {
-      navInner.style.height = '64px';
-    } else {
-      navInner.style.height = '80px';
-    }
-
-    // Hide on scroll down, show on scroll up
-    if (scrollY > 300 && scrollY > lastScrollY && !isMenuOpen) {
-      navbar.style.transform = 'translateY(-100%)';
-    } else {
-      navbar.style.transform = 'translateY(0)';
-    }
-
-    lastScrollY = scrollY;
   }
 
-  // Mobile menu toggle
   function toggleMenu() {
     isMenuOpen = !isMenuOpen;
     mobileMenuBtn.setAttribute('aria-expanded', String(isMenuOpen));
-
     if (isMenuOpen) {
       mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
       mobileMenu.classList.add('opacity-100', 'pointer-events-auto');
       document.body.style.overflow = 'hidden';
-
-      // Animate hamburger to X
-      hamburgerSpans[0].style.transform = 'rotate(45deg) translate(3px, 5px)';
-      hamburgerSpans[1].style.opacity = '0';
-      hamburgerSpans[2].style.transform = 'rotate(-45deg) translate(3px, -5px)';
-
-      // Stagger links in
-      mobileNavLinks.forEach(link => {
-        (link as HTMLElement).style.transform = 'translateY(0)';
-        (link as HTMLElement).style.opacity = '1';
-      });
+      hamburgerSpans[0].style.transform = 'translateY(3px) rotate(45deg)';
+      hamburgerSpans[1].style.transform = 'translateY(-3px) rotate(-45deg)';
     } else {
       mobileMenu.classList.add('opacity-0', 'pointer-events-none');
       mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
       document.body.style.overflow = '';
-
-      // Reset hamburger
       hamburgerSpans[0].style.transform = '';
-      hamburgerSpans[1].style.opacity = '1';
-      hamburgerSpans[2].style.transform = '';
-
-      // Reset links
-      mobileNavLinks.forEach(link => {
-        (link as HTMLElement).style.transform = 'translateY(16px)';
-        (link as HTMLElement).style.opacity = '0';
-      });
+      hamburgerSpans[1].style.transform = '';
     }
   }
 
-  // Close mobile menu on link click
-  mobileNavLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      if (isMenuOpen) toggleMenu();
-    });
-  });
-
+  mobileNavLinks.forEach(link => link.addEventListener('click', () => { if (isMenuOpen) toggleMenu(); }));
   mobileMenuBtn.addEventListener('click', toggleMenu);
   window.addEventListener('scroll', handleScroll, { passive: true });
   handleScroll();

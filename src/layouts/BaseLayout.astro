@@ -7,8 +7,8 @@ interface Props {
 }
 
 const {
-  title = 'Global Team Plans - Employee Assistance Programme | EAP for 180+ Countries',
-  description = 'Comprehensive Employee Assistance Programme (EAP) covering 180+ countries, 35M+ lives, 50+ languages. 24/7 counselling, crisis support, and digital wellbeing.',
+  title = 'Global Team Plans — Global employee wellbeing, made simple',
+  description = 'Global Team Plans helps companies access trusted global health, wellbeing, and EAP programmes — delivered as a certified TELUS Health partner agency across 180+ countries.',
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -26,22 +26,30 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       gtag('config', 'G-7REQ8N24GS');
     </script>
 
-    <!-- Primary Meta Tags -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content="EAP, employee assistance programme, workplace wellbeing, mental health support, corporate counselling, global EAP provider" />
+    <meta name="keywords" content="EAP, TELUS Health partner, employee assistance programme, workplace wellbeing, enterprise mental health, GDPR EAP, clinical governance, global EAP" />
     <link rel="canonical" href={canonicalURL} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#FFFFFF" />
 
-    <!-- Fonts -->
+    <!-- Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-    <!-- Open Graph / Facebook -->
+    <!-- frontendmaxxing snippets (world map, paper grain) -->
+    <link rel="stylesheet" href="/fxm/world-map.css" />
+    <link rel="stylesheet" href="/fxm/noise-grain.css" />
+
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
@@ -49,93 +57,188 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:image" content={new URL('/og-image.png', Astro.site)} />
     <meta property="og:site_name" content="Global Team Plans" />
 
-    <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={new URL('/og-image.png', Astro.site)} />
 
-    <!-- Structured Data -->
     <script type="application/ld+json" is:inline>
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Global Team Plans",
       "url": "https://globalteamplans.com",
-      "description": "Comprehensive Employee Assistance Programme covering 180+ countries, supporting 35M+ lives in 50+ languages",
+      "description": "Certified TELUS Health partner agency. We sell and implement Employee Assistance Programmes to enterprises operating across borders.",
       "contactPoint": {
         "@type": "ContactPoint",
         "email": "find@gtpinsurance.gr",
         "contactType": "sales"
       },
-      "areaServed": "Worldwide"
+      "areaServed": "Worldwide",
+      "knowsAbout": ["Employee Assistance Programme", "Workplace Wellbeing", "TELUS Health"]
     }
     </script>
+
+    <!-- Pre-paint: hide reveal targets to avoid flash before GSAP boots -->
+    <style is:inline>
+      [data-reveal], [data-reveal-stagger] > *, [data-split] {
+        opacity: 0;
+      }
+      html.no-gsap [data-reveal],
+      html.no-gsap [data-reveal-stagger] > *,
+      html.no-gsap [data-split] {
+        opacity: 1;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        [data-reveal], [data-reveal-stagger] > *, [data-split] {
+          opacity: 1 !important;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div class="scroll-progress" id="scrollProgress"></div>
-    <slot />
+    <!-- ScrollSmoother needs this wrapper structure. -->
+    <div id="smooth-wrapper">
+      <div id="smooth-content">
+        <slot />
+      </div>
+    </div>
 
-    <!-- Animation Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" is:inline></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" is:inline></script>
+    <!-- GSAP + plugins (free as of 2025) -->
+    <script src="/fxm/gsap/gsap.min.js" is:inline></script>
+    <script src="/fxm/gsap/ScrollTrigger.min.js" is:inline></script>
+    <script src="/fxm/gsap/ScrollSmoother.min.js" is:inline></script>
+    <script src="/fxm/gsap/SplitText.min.js" is:inline></script>
+
+    <!-- World map (still used in Partnership section) -->
+    <script src="/fxm/world-map.js" is:inline></script>
+
     <script is:inline>
-      // Initialize GSAP
-      gsap.registerPlugin(ScrollTrigger);
-
-      // Scroll Progress Bar
-      gsap.to('#scrollProgress', {
-        scaleX: 1,
-        ease: 'none',
-        scrollTrigger: {
-          scrub: 0.3
+      (function () {
+        if (!window.gsap) {
+          document.documentElement.classList.add('no-gsap');
+          return;
         }
-      });
+        var gsap = window.gsap;
+        gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
 
-      // Reveal Animations
-      const reveals = document.querySelectorAll('.reveal');
-      reveals.forEach((el) => {
-        gsap.fromTo(el, 
-          { 
-            opacity: 0, 
-            y: 30 
-          }, 
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1,
+        var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // ──────────────────────────────────────────────────────────
+        // ScrollSmoother — buttery global scroll
+        // ──────────────────────────────────────────────────────────
+        var smoother = null;
+        if (!reduced && window.matchMedia('(min-width: 901px)').matches) {
+          smoother = ScrollSmoother.create({
+            wrapper: '#smooth-wrapper',
+            content: '#smooth-content',
+            smooth: 1.1,
+            effects: true,
+            normalizeScroll: true,
+          });
+        }
+
+        // ──────────────────────────────────────────────────────────
+        // [data-reveal] — single element fade/slide on enter viewport
+        // ──────────────────────────────────────────────────────────
+        gsap.utils.toArray('[data-reveal]').forEach(function (el) {
+          var dir = el.dataset.reveal || 'up';
+          var delay = parseFloat(el.dataset.revealDelay || '0');
+          var fromVars = { opacity: 0, y: dir === 'up' ? 24 : dir === 'down' ? -24 : 0, x: dir === 'left' ? -24 : dir === 'right' ? 24 : 0 };
+          gsap.fromTo(el, fromVars, {
+            opacity: 1, x: 0, y: 0,
+            duration: 0.9,
             ease: 'power3.out',
-            scrollTrigger: {
-              trigger: el,
-              start: 'top 85%',
-              toggleActions: 'play none none none'
-            }
-          }
-        );
-      });
+            delay: delay,
+            scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+          });
+        });
 
-      // Stats Number Counter Animation
-      const statNumbers = document.querySelectorAll('.stat-number');
-      statNumbers.forEach((el) => {
-        const value = parseInt(el.getAttribute('data-value') || '0');
-        const suffix = el.getAttribute('data-suffix') || '';
-        
-        ScrollTrigger.create({
-          trigger: el,
-          onEnter: () => {
-            gsap.to(el, {
-              innerText: value,
-              duration: 2,
-              snap: { innerText: 1 },
-              ease: 'power2.out',
-              onUpdate: function() {
-                el.innerText = Math.floor(this.targets()[0].innerText) + suffix;
-              }
+        // ──────────────────────────────────────────────────────────
+        // [data-reveal-stagger] — stagger immediate children
+        // ──────────────────────────────────────────────────────────
+        gsap.utils.toArray('[data-reveal-stagger]').forEach(function (parent) {
+          var kids = parent.querySelectorAll(':scope > *');
+          gsap.fromTo(kids, { opacity: 0, y: 18 }, {
+            opacity: 1, y: 0,
+            duration: 0.7, ease: 'power3.out',
+            stagger: 0.08,
+            scrollTrigger: { trigger: parent, start: 'top 85%', once: true },
+          });
+        });
+
+        // ──────────────────────────────────────────────────────────
+        // [data-split] — word-by-word stagger reveal (headlines)
+        // ──────────────────────────────────────────────────────────
+        gsap.utils.toArray('[data-split]').forEach(function (el) {
+          try {
+            var split = new SplitText(el, { type: 'words', wordsClass: 'word' });
+            gsap.set(el, { opacity: 1 });
+            gsap.fromTo(split.words, { opacity: 0, y: 28 }, {
+              opacity: 1, y: 0,
+              duration: 0.85, ease: 'power3.out',
+              stagger: 0.04,
+              scrollTrigger: { trigger: el, start: 'top 88%', once: true },
             });
+          } catch (e) {
+            gsap.set(el, { opacity: 1 });
           }
         });
-      });
+
+        // ──────────────────────────────────────────────────────────
+        // [data-count-up] — number roll on enter viewport
+        // ──────────────────────────────────────────────────────────
+        gsap.utils.toArray('[data-count-up]').forEach(function (el) {
+          var target = parseFloat(el.dataset.countUp || '0');
+          var suffix = el.dataset.countSuffix || '';
+          var prefix = el.dataset.countPrefix || '';
+          var dec    = parseInt(el.dataset.countDecimals || '0', 10);
+          var obj = { v: 0 };
+          el.textContent = prefix + (0).toFixed(dec) + suffix;
+          gsap.to(obj, {
+            v: target,
+            duration: 2,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+            onUpdate: function () {
+              el.textContent = prefix + obj.v.toFixed(dec) + suffix;
+            },
+          });
+        });
+
+        // ──────────────────────────────────────────────────────────
+        // [data-tilt] — soft pointer-tracked 3D tilt on cards
+        // ──────────────────────────────────────────────────────────
+        gsap.utils.toArray('[data-tilt]').forEach(function (card) {
+          if (reduced) return;
+          var max = parseFloat(card.dataset.tiltMax || '6');
+          card.style.transformStyle = 'preserve-3d';
+          card.style.transformPerspective = '1000px';
+          var qX = gsap.quickTo(card, 'rotationX', { duration: 0.5, ease: 'power2.out' });
+          var qY = gsap.quickTo(card, 'rotationY', { duration: 0.5, ease: 'power2.out' });
+          var qS = gsap.quickTo(card, 'scale',     { duration: 0.5, ease: 'power2.out' });
+          card.addEventListener('pointermove', function (e) {
+            var r = card.getBoundingClientRect();
+            var px = (e.clientX - r.left) / r.width  - 0.5;
+            var py = (e.clientY - r.top)  / r.height - 0.5;
+            qY(px * max);
+            qX(-py * max);
+            qS(1.02);
+          });
+          card.addEventListener('pointerleave', function () {
+            qX(0); qY(0); qS(1);
+          });
+        });
+
+        // ──────────────────────────────────────────────────────────
+        // Refresh ScrollTrigger after fonts + images settle
+        // ──────────────────────────────────────────────────────────
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
+        }
+        window.addEventListener('load', function () { ScrollTrigger.refresh(); });
+      })();
     </script>
   </body>
 </html>
