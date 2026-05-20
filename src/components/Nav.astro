@@ -12,26 +12,32 @@ const navLinks = [
 </a>
 
 <nav id="navbar" class="fixed top-0 left-0 right-0 z-50" aria-label="Main navigation">
-  <div class="container-prose">
-    <div class="flex items-center justify-between h-16 md:h-18" id="navInner">
-      <!-- Logo wordmark -->
-      <a href="/" class="flex items-center gap-3 group" aria-label="Global Team Plans — home">
+  <div class="w-full">
+    <div class="flex items-center justify-between gap-3 h-16 md:h-[72px] pr-4 sm:pr-6 md:pr-10 lg:pr-14" id="navInner">
+      <!-- Logo wordmark — responsive sizing across all displays -->
+      <a
+        href="/"
+        class="flex items-center gap-3 group min-w-0 shrink"
+        aria-label="Global Team Plans — home"
+      >
         <img
           src="/logo.png"
           alt="Global Team Plans"
           width="260"
           height="21"
-          class="h-[18px] md:h-[22px] w-auto select-none"
+          class="h-[16px] sm:h-[18px] md:h-[20px] lg:h-[24px] w-auto max-w-full select-none shrink-0"
           draggable="false"
+          decoding="async"
+          fetchpriority="high"
         />
       </a>
 
-      <!-- Desktop links -->
-      <div class="hidden md:flex items-center gap-9">
+      <!-- Desktop links — tight at md, comfortable at lg+ -->
+      <div class="hidden md:flex items-center gap-5 lg:gap-9 shrink-0">
         {navLinks.map(link => (
           <a
             href={link.href}
-            class="text-[14px] font-semibold text-[var(--color-navy)] hover:text-[var(--color-brand-blue)] transition-colors relative group/link"
+            class="text-[13px] lg:text-[14px] font-semibold text-[var(--color-navy)] hover:text-[var(--color-brand-blue)] transition-colors relative group/link whitespace-nowrap"
           >
             {link.label}
             <span class="absolute -bottom-2 left-0 w-0 h-[2px] bg-[var(--color-brand-blue)] transition-all duration-300 group-hover/link:w-full"></span>
@@ -39,10 +45,11 @@ const navLinks = [
         ))}
       </div>
 
-      <!-- CTA -->
-      <div class="hidden md:block">
-        <a href="#contact" class="btn-primary">
-          Book a consultation
+      <!-- CTA — short text at md, full text at lg+ -->
+      <div class="hidden md:block shrink-0">
+        <a href="#contact" class="btn-primary nav-cta">
+          <span class="lg:hidden">Book demo</span>
+          <span class="hidden lg:inline">Book a consultation</span>
           <span aria-hidden>→</span>
         </a>
       </div>
@@ -50,7 +57,7 @@ const navLinks = [
       <!-- Mobile hamburger (44×44 tap target per Apple HIG) -->
       <button
         id="mobileMenuBtn"
-        class="md:hidden relative w-11 h-11 flex items-center justify-center -mr-2"
+        class="md:hidden relative w-11 h-11 flex items-center justify-center -mr-2 shrink-0"
         aria-label="Toggle navigation menu"
         aria-controls="mobileMenu"
         aria-expanded="false"
