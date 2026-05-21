@@ -555,11 +555,47 @@ select.field { appearance: none; background-image: linear-gradient(45deg, transp
    World map theming — uses brand colors
    ======================================== */
 .world-map.world-map-gtp {
-  --wm-dot:      rgba(18, 50, 74, 0.18);
+  /* Whole landmass reads as 'covered' in brand green; hubs pulse brighter blue */
+  --wm-dot:      rgba(47, 174, 98, 0.42);
   --wm-line:     var(--color-brand-blue);
-  --wm-pulse:    var(--color-brand-green);
-  --wm-coverage: var(--color-brand-green);
+  --wm-pulse:    var(--color-brand-blue);
+  --wm-coverage: var(--color-brand-blue);
 }
+
+/* Coverage stat block beside/under the map */
+.coverage-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.coverage-stat .cs-num {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--color-brand-green-dark);
+}
+.coverage-stat .cs-of {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-ink-mute);
+}
+.coverage-bar {
+  position: relative;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-rule);
+  overflow: hidden;
+}
+.coverage-bar > span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-brand-blue), var(--color-brand-green) 60%, var(--color-brand-gold));
+  transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.coverage-bar.is-filled > span { width: 92.3%; }
 
 /* ========================================
    Backwards-compat shims for old glass classes
@@ -644,139 +680,201 @@ select.field { appearance: none; background-image: linear-gradient(45deg, transp
 .tag-blue, .tag-green, .tag-gold, .tag-amber { min-height: 22px; }
 
 /* ========================================
-   Programme tabs (the redesigned section)
+   Gradient tiles — bold 3-box colourful moment (Who we help)
+   Rich per-colour gradient + a subtle secondary-colour glow so all
+   three brand colours tie the trio together.
    ======================================== */
-.prog-tablist {
-  display: flex;
-  gap: 0.4rem;
-  margin-bottom: 1.75rem;
-  border-bottom: 1px solid var(--color-rule);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 2px;
-}
-.prog-tablist::-webkit-scrollbar { display: none; }
-.prog-tablist { scrollbar-width: none; }
-
-.prog-tab {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.75rem 1.1rem;
-  background: transparent;
-  border: 0;
-  border-bottom: 3px solid transparent;
-  margin-bottom: -1px;
-  color: var(--color-ink-mute);
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: color 0.2s ease, border-color 0.3s ease, background 0.2s ease;
-  min-height: 44px;
-  border-radius: 8px 8px 0 0;
-}
-.prog-tab .prog-tab-num {
-  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: inherit;
-  opacity: 0.7;
-}
-.prog-tab .prog-tab-label {
-  letter-spacing: -0.005em;
-}
-.prog-tab:hover {
-  color: var(--color-navy);
-  background: rgba(18, 50, 74, 0.04);
-}
-.prog-tab.is-active            { color: var(--color-navy); }
-.prog-tab.is-active.prog-tab-blue  { border-bottom-color: var(--color-brand-blue); }
-.prog-tab.is-active.prog-tab-green { border-bottom-color: var(--color-brand-green); }
-.prog-tab.is-active.prog-tab-gold  { border-bottom-color: var(--color-brand-gold); }
-.prog-tab:focus-visible {
-  outline: 2px solid var(--color-brand-blue);
-  outline-offset: 2px;
-}
-
-.prog-panel {
-  --panel-accent: var(--color-brand-blue);
-  background: #FFFFFF;
-  border: 1px solid var(--color-rule);
-  border-bottom: 4px solid var(--panel-accent);
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 8px 28px rgba(18, 50, 74, 0.04);
-  min-height: 340px;
-  transition: border-color 0.4s ease;
-}
-.prog-panel-grid {
+.grad-grid {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 2rem;
-  align-items: start;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
 }
-.prog-panel-rail {
+@media (min-width: 768px) {
+  .grad-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.grad-tile {
+  --g-fg: #FFFFFF;
+  --g-fg-soft: rgba(255, 255, 255, 0.88);
+  --g-chip: rgba(255, 255, 255, 0.18);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.5rem;
-  min-width: 110px;
-}
-.prog-iconbox {
-  width: 56px !important;
-  height: 56px !important;
-  border-radius: 12px;
-}
-.prog-bignum {
-  font-family: 'Inter', sans-serif;
-  font-weight: 800;
-  font-size: clamp(3rem, 8vw, 5.5rem);
-  letter-spacing: -0.04em;
-  line-height: 0.85;
-  color: var(--color-brand-blue);
-}
-.prog-panel-body { min-width: 0; }
-.prog-title {
-  display: inline-block;
-  font-size: clamp(1.3rem, 2vw, 1.6rem);
-  font-weight: 700;
-  letter-spacing: -0.012em;
-  color: var(--color-navy);
-}
-.prog-body {
-  margin-top: 1rem;
-  font-size: 15.5px;
-  line-height: 1.6;
-  color: var(--color-ink-soft);
-}
-.prog-key {
-  margin-top: 1.25rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--color-rule);
-  display: flex;
-  align-items: flex-start;
-  gap: 0.65rem;
-  font-size: 13px;
-  color: var(--color-ink-mute);
-  line-height: 1.45;
-}
-.prog-key-bar {
-  display: inline-block;
-  width: 14px;
-  height: 2px;
-  margin-top: 7px;
-  border-radius: 1px;
-  flex-shrink: 0;
+  padding: 2rem 1.75rem;
+  border-radius: 18px;
+  color: var(--g-fg);
+  min-height: 280px;
+  box-shadow: 0 14px 36px -14px rgba(18, 50, 74, 0.32);
+  transition: transform 0.3s cubic-bezier(0.2,0.9,0.25,1), box-shadow 0.3s ease;
+  will-change: transform;
 }
 
-@media (max-width: 640px) {
-  .prog-panel { padding: 1.5rem; min-height: 280px; }
-  .prog-panel-grid { grid-template-columns: 1fr; gap: 1rem; }
-  .prog-panel-rail { flex-direction: row; align-items: center; min-width: 0; gap: 1rem; }
-  .prog-bignum { font-size: 2.75rem; }
-  .prog-iconbox { width: 48px !important; height: 48px !important; }
+/* Each tile: a diagonal gradient of its own colour + a soft radial glow
+   in the NEXT brand colour at the top-right, so blue→green→gold flow. */
+.grad-blue {
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(47,174,98,0.55) 0%, transparent 45%),
+    linear-gradient(150deg, #1487B8 0%, #005E82 70%, #004D6B 100%);
 }
+.grad-green {
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(230,169,0,0.55) 0%, transparent 45%),
+    linear-gradient(150deg, #36BB6C 0%, #1E7A45 72%, #176237 100%);
+}
+.grad-gold {
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(0,94,130,0.45) 0%, transparent 48%),
+    linear-gradient(150deg, #F7C73E 0%, #E6A900 72%, #CC9600 100%);
+  --g-fg: #12324A;
+  --g-fg-soft: rgba(18, 50, 74, 0.82);
+  --g-chip: rgba(18, 50, 74, 0.12);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .grad-tile:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 26px 50px -16px rgba(18, 50, 74, 0.42);
+  }
+}
+
+.grad-shine {
+  position: absolute;
+  top: 0; left: 0;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.4), transparent);
+  transform: translateX(-130%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.grad-gold .grad-shine {
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.6), transparent);
+}
+
+.grad-icon {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--g-chip);
+  color: var(--g-fg);
+  margin-bottom: 1.25rem;
+  backdrop-filter: blur(2px);
+}
+.grad-title {
+  position: relative;
+  z-index: 2;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  color: var(--g-fg);
+}
+.grad-body {
+  position: relative;
+  z-index: 2;
+  margin-top: 0.75rem;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--g-fg-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grad-tile { transition: none; }
+}
+
+/* ========================================
+   Solid color tiles — bold filled (Why GTP)
+   Distinct from the gradient tiles: flat brand colour, no shine.
+   ======================================== */
+.solid-tile {
+  --s-fg: #FFFFFF;
+  --s-fg-soft: rgba(255, 255, 255, 0.86);
+  --s-chip: rgba(255, 255, 255, 0.16);
+  position: relative;
+  padding: 2rem 1.75rem;
+  border-radius: 16px;
+  color: var(--s-fg);
+  box-shadow: 0 12px 32px -16px rgba(18, 50, 74, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.solid-blue  { background: #005E82; }
+.solid-green { background: #1E7A45; }
+.solid-gold  {
+  background: #E6A900;
+  --s-fg: #12324A;
+  --s-fg-soft: rgba(18, 50, 74, 0.8);
+  --s-chip: rgba(18, 50, 74, 0.12);
+}
+@media (hover: hover) and (pointer: fine) {
+  .solid-tile:hover { transform: translateY(-5px); box-shadow: 0 22px 44px -16px rgba(18,50,74,0.4); }
+}
+.solid-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 13px;
+  background: var(--s-chip);
+  color: var(--s-fg);
+  margin-bottom: 1.2rem;
+}
+.solid-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  color: var(--s-fg);
+}
+.solid-body {
+  margin-top: 0.75rem;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--s-fg-soft);
+}
+
+/* ========================================
+   Programme — simple minimal treatment (borderless, top rule)
+   ======================================== */
+.prog-simple {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.25rem 2.5rem;
+}
+@media (min-width: 640px)  { .prog-simple { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .prog-simple { grid-template-columns: repeat(3, 1fr); } }
+
+.prog-simple-item {
+  position: relative;
+  padding-top: 1.25rem;
+}
+.prog-simple-rule {
+  position: absolute;
+  top: 0; left: 0;
+  width: 40px;
+  height: 3px;
+  border-radius: 2px;
+}
+.prog-simple-rule-blue  { background: var(--color-brand-blue); }
+.prog-simple-rule-green { background: var(--color-brand-green); }
+.prog-simple-rule-gold  { background: var(--color-brand-gold); }
+
+.prog-simple-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+.prog-simple-icon-blue  { background: var(--color-brand-blue-pale);  color: var(--color-brand-blue); }
+.prog-simple-icon-green { background: var(--color-brand-green-pale); color: var(--color-brand-green-dark); }
+.prog-simple-icon-gold  { background: var(--color-brand-gold-pale);  color: var(--color-brand-gold-dark); }

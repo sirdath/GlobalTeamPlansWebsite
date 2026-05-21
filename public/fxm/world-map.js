@@ -27,7 +27,8 @@
     dotColor: null,
     pulseColor: null,
     coverageColor: null, // overrides --wm-coverage CSS var
-    density: 1
+    density: 1,
+    subdivide: 1         // S×S dot cluster per land cell (denser halftone)
   };
 
   // Compact bitmap of land (1 = land) in equirectangular projection.
@@ -107,28 +108,49 @@
     svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
     el.appendChild(svg);
 
-    // Land dots: iterate the bitmap, place a dot per land cell, jitter slightly
+    // Land dots: iterate the bitmap. Each land cell is subdivided into an
+    // S×S cluster of dots so the continents render as a dense halftone
+    // (reads as fully 'covered' instead of a sparse silhouette).
     var rows = LAND_MAP.length;
     var cols = LAND_MAP[0].length;
     var cellW = W / cols;
     var cellH = H / rows;
-    var dotR = Math.max(0.8, cellW * 0.18) * o.density;
+    var S = Math.max(1, Math.round(o.subdivide || 1));
+    var subW = cellW / S;
+    var subH = cellH / S;
+    // Dot radius scaled to the sub-cell so dense clusters stay clean
+    var dotR = Math.max(0.5, Math.min(subW, subH) * 0.34) * o.density;
 
     var dotsG = document.createElementNS(SVGNS, 'g');
     dotsG.setAttribute('class', 'wm-dots');
     svg.appendChild(dotsG);
 
+    function inLand(rr, cc) {
+      if (rr < 0 || rr >= rows || cc < 0 || cc >= cols) return false;
+      return LAND_MAP[rr][cc] === '#';
+    }
+
     for (var r = 0; r < rows; r++) {
       for (var c = 0; c < cols; c++) {
-        if (LAND_MAP[r][c] === '#') {
-          var cx = c * cellW + cellW / 2;
-          var cy = r * cellH + cellH / 2;
-          var d = document.createElementNS(SVGNS, 'circle');
-          d.setAttribute('cx', cx.toFixed(1));
-          d.setAttribute('cy', cy.toFixed(1));
-          d.setAttribute('r', dotR.toFixed(2));
-          d.setAttribute('class', 'wm-dot');
-          dotsG.appendChild(d);
+        if (LAND_MAP[r][c] !== '#') continue;
+        for (var sy = 0; sy < S; sy++) {
+          for (var sx = 0; sx < S; sx++) {
+            // Soften the blocky edges: skip the outermost sub-dots on a
+            // sub-cell only if the neighbouring cell in that direction is water,
+            // ~30% of the time, to avoid a hard rectangular silhouette.
+            var edgeX = (sx === 0 && !inLand(r, c - 1)) || (sx === S - 1 && !inLand(r, c + 1));
+            var edgeY = (sy === 0 && !inLand(r - 1, c)) || (sy === S - 1 && !inLand(r + 1, c));
+            if ((edgeX || edgeY) && ((sx * 7 + sy * 13 + r * 5 + c * 3) % 10 < 3)) continue;
+
+            var cx = c * cellW + (sx + 0.5) * subW;
+            var cy = r * cellH + (sy + 0.5) * subH;
+            var d = document.createElementNS(SVGNS, 'circle');
+            d.setAttribute('cx', cx.toFixed(1));
+            d.setAttribute('cy', cy.toFixed(1));
+            d.setAttribute('r', dotR.toFixed(2));
+            d.setAttribute('class', 'wm-dot');
+            dotsG.appendChild(d);
+          }
         }
       }
     }
@@ -143,7 +165,7 @@
         var c = document.createElementNS(SVGNS, 'circle');
         c.setAttribute('cx', pt.x.toFixed(1));
         c.setAttribute('cy', pt.y.toFixed(1));
-        c.setAttribute('r', '2.6');
+        c.setAttribute('r', '4.5');
         c.setAttribute('class', 'wm-coverage');
         c.style.animationDelay = ((idx % 12) * 0.12) + 's';
         covG.appendChild(c);

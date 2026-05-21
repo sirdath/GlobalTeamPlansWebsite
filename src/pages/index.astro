@@ -41,8 +41,9 @@ const programme = [
   { num: '06', title: 'HR analytics & utilisation dashboard',    body: 'Aggregate, anonymised reporting for HR: utilisation, modality mix, presenting issues, and demographic trends. Quarterly business reviews with named account management.', visual: 'analytics',   key: 'Monthly + quarterly reviews · named account team' },
 ];
 
-// Brand-color rotation across the 6 programme cards: blue · green · gold · blue · green · gold
-const programmeAccents = ['blue', 'green', 'gold', 'blue', 'green', 'gold'];
+// Brand-color layout across the 6 tiles — balanced so no two adjacent tiles
+// share a colour (row1: blue green gold · row2: gold blue green).
+const programmeAccents = ['blue', 'green', 'gold', 'gold', 'blue', 'green'];
 
 const whoWeHelp = [
   {
@@ -112,23 +113,54 @@ const sources = [
           </h2>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-6" data-reveal-stagger>
+        <div class="grad-grid" id="audienceGrid">
           {whoWeHelp.map((a, i) => {
             const Ico = a.icon;
-            const accentClass = `accent-top-${a.accent}`;
-            const iconClass   = `icon-square icon-square-${a.accent}`;
-            const isClass     = `is-${a.accent}`;
-            const underClass  = `under-brand under-${a.accent}`;
             return (
-              <div class={`card-soft ${isClass} ${accentClass}`} data-tilt data-tilt-max="5">
-                <span class={iconClass}><Ico size={22} strokeWidth={1.75} /></span>
-                <h3 class={`mt-5 text-[1.25rem] tracking-tight inline-block ${underClass}`}>{a.title}</h3>
-                <p class="mt-3 text-[15px] leading-relaxed text-[var(--color-ink-soft)]">{a.body}</p>
-              </div>
+              <article class={`grad-tile grad-${a.accent}`} data-grad-tile>
+                <span class="grad-shine" aria-hidden="true"></span>
+                <span class="grad-icon"><Ico size={26} strokeWidth={1.85} /></span>
+                <h3 class="grad-title">{a.title}</h3>
+                <p class="grad-body">{a.body}</p>
+              </article>
             );
           })}
         </div>
       </div>
+
+      <script is:inline>
+        (function () {
+          function start() {
+            var tiles = Array.prototype.slice.call(document.querySelectorAll('#audienceGrid [data-grad-tile]'));
+            if (!tiles.length) return;
+            var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var fineHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+            if (window.gsap && !reduced) {
+              window.gsap.set(tiles, { opacity: 0, y: 30, scale: 0.94 });
+              window.gsap.to(tiles, {
+                opacity: 1, y: 0, scale: 1, duration: 0.65, ease: 'power3.out',
+                stagger: 0.12,
+                scrollTrigger: { trigger: '#audienceGrid', start: 'top 82%', once: true },
+              });
+              if (fineHover) {
+                tiles.forEach(function (tile) {
+                  var shine = tile.querySelector('.grad-shine');
+                  tile.addEventListener('mouseenter', function () {
+                    window.gsap.fromTo(shine,
+                      { xPercent: -130, opacity: 0 },
+                      { xPercent: 130, opacity: 1, duration: 0.75, ease: 'power2.out',
+                        onComplete: function () { window.gsap.set(shine, { opacity: 0 }); } });
+                  });
+                });
+              }
+            } else {
+              tiles.forEach(function (t) { t.style.opacity = '1'; });
+            }
+          }
+          if (document.readyState !== 'loading') start();
+          else document.addEventListener('DOMContentLoaded', start);
+        })();
+      </script>
     </section>
 
     <!-- ============================================================
@@ -152,8 +184,23 @@ const sources = [
 
         <div class="md:col-span-7" data-reveal="up" data-reveal-delay="0.15">
           <div class="world-map world-map-light world-map-gtp" id="partnership-map"></div>
-          <p class="mt-4 text-[12px] text-[var(--color-ink-mute)] text-center">
-            TELUS&nbsp;Health delivery network &nbsp;·&nbsp; 180+ countries and territories<sup class="fn-ref"><a href="#footnotes">1</a></sup>
+
+          <!-- Coverage stat: 180 of 195 countries -->
+          <div class="mt-6 grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-x-8 gap-y-4 items-end">
+            <div class="coverage-stat">
+              <span class="cs-num"><span data-count-up="180">180</span></span>
+              <span class="cs-of">of 195 countries</span>
+            </div>
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="eyebrow eyebrow-green">Global coverage</span>
+                <span class="text-[13px] font-bold text-[var(--color-brand-green-dark)]">92%</span>
+              </div>
+              <div class="coverage-bar" id="coverageBar"><span></span></div>
+            </div>
+          </div>
+          <p class="mt-4 text-[12px] text-[var(--color-ink-mute)]">
+            The TELUS&nbsp;Health delivery network reaches 180 of the world's 195 countries and territories<sup class="fn-ref"><a href="#footnotes">1</a></sup>.
           </p>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10 pt-8 border-t border-[var(--color-rule)]">
@@ -180,43 +227,31 @@ const sources = [
         (function () {
           function start() {
             if (!window.WorldMap) return setTimeout(start, 50);
+            var mapEl = document.getElementById('partnership-map');
+            var sub = (mapEl && mapEl.clientWidth < 520) ? 3 : 4; // lighter on small screens
             window.WorldMap.init('#partnership-map', {
-              // No arcs — clean dotted coverage map
               dots: [],
-              // 65+ representative country/city markers across continents to convey 180-country coverage
-              coverage: [
-                // Europe
-                { lat: 48.85, lng:   2.35 }, { lat: 52.52, lng:  13.40 }, { lat: 40.42, lng:  -3.70 },
-                { lat: 41.90, lng:  12.50 }, { lat: 52.37, lng:   4.89 }, { lat: 48.21, lng:  16.37 },
-                { lat: 52.23, lng:  21.01 }, { lat: 59.33, lng:  18.07 }, { lat: 60.17, lng:  24.94 },
-                { lat: 50.85, lng:   4.35 }, { lat: 53.35, lng:  -6.26 }, { lat: 38.72, lng:  -9.14 },
-                { lat: 50.08, lng:  14.43 }, { lat: 44.43, lng:  26.10 }, { lat: 47.50, lng:  19.04 },
-                { lat: 55.68, lng:  12.57 }, { lat: 64.13, lng: -21.94 }, { lat: 41.01, lng:  28.98 },
-                { lat: 46.20, lng:   6.15 }, { lat: 47.37, lng:   8.55 },
-                // Americas
-                { lat: 49.28, lng:-123.12 }, { lat: 37.77, lng:-122.42 }, { lat: 41.88, lng: -87.63 },
-                { lat: 25.76, lng: -80.19 }, { lat: 19.43, lng: -99.13 }, { lat:  4.71, lng: -74.07 },
-                { lat:-12.05, lng: -77.04 }, { lat:-34.61, lng: -58.38 }, { lat:-23.55, lng: -46.63 },
-                { lat:-22.91, lng: -43.17 }, { lat:-33.45, lng: -70.67 }, { lat:  9.93, lng: -84.08 },
-                { lat: 45.42, lng: -75.70 }, { lat: 14.63, lng: -90.51 },
-                // Asia
-                { lat: 35.68, lng: 139.69 }, { lat: 39.90, lng: 116.41 }, { lat: 31.23, lng: 121.47 },
-                { lat: 37.57, lng: 126.98 }, { lat: 22.32, lng: 114.17 }, { lat: 13.76, lng: 100.50 },
-                { lat: -6.21, lng: 106.85 }, { lat: 19.08, lng:  72.88 }, { lat: 28.61, lng:  77.21 },
-                { lat: 14.60, lng: 120.98 }, { lat:  3.14, lng: 101.69 }, { lat: 23.81, lng:  90.41 },
-                { lat: 24.86, lng:  67.01 }, { lat: 10.82, lng: 106.63 }, { lat: 25.03, lng: 121.57 },
-                // Middle East / Africa
-                { lat: 24.71, lng:  46.68 }, { lat: 32.08, lng:  34.78 }, { lat: 30.04, lng:  31.24 },
-                { lat: -1.29, lng:  36.82 }, { lat:  6.52, lng:   3.38 }, { lat: 33.57, lng:  -7.59 },
-                { lat: 36.81, lng:  10.18 }, { lat: 30.06, lng:  31.25 }, { lat: -3.37, lng:  29.36 },
-                { lat: -8.84, lng:  13.23 },
-                // Oceania
-                { lat:-37.81, lng: 144.96 }, { lat:-36.85, lng: 174.76 },
-              ],
+              coverage: [],         // no overlay markers — clean green halftone landmass
+              subdivide: sub,       // dense halftone continents (3 on mobile, 4 on desktop)
+              density: 0.92,        // tuned so dense dots stay crisp, not blobby
             });
           }
           if (document.readyState !== 'loading') start();
           else document.addEventListener('DOMContentLoaded', start);
+
+          // Fill the coverage bar when it scrolls into view
+          function fillBar() {
+            var bar = document.getElementById('coverageBar');
+            if (!bar) return;
+            var io = new IntersectionObserver(function (entries) {
+              entries.forEach(function (e) {
+                if (e.isIntersecting) { bar.classList.add('is-filled'); io.unobserve(bar); }
+              });
+            }, { threshold: 0.4 });
+            io.observe(bar);
+          }
+          if (document.readyState !== 'loading') fillBar();
+          else document.addEventListener('DOMContentLoaded', fillBar);
         })();
       </script>
     </section>
@@ -236,154 +271,28 @@ const sources = [
           </p>
         </div>
 
-        <!-- Tab list — horizontally scrollable on mobile -->
-        <div class="prog-tablist" role="tablist" aria-label="Programme components">
+        <!-- Simple treatment — minimal, borderless, brand-color top rule per item -->
+        <div class="prog-simple" data-reveal-stagger>
           {programme.map((item, i) => {
+            const Icon   = programmeIcons[item.visual];
             const accent = programmeAccents[i];
             return (
-              <button
-                type="button"
-                role="tab"
-                id={`prog-tab-${i}`}
-                aria-controls="prog-panel"
-                aria-selected={i === 0 ? 'true' : 'false'}
-                tabindex={i === 0 ? '0' : '-1'}
-                class={`prog-tab prog-tab-${accent}`}
-                data-prog-tab={i}
-              >
-                <span class="prog-tab-num">{item.num}</span>
-                <span class="prog-tab-label">{item.title.split(' ').slice(0, 2).join(' ').replace(/[,&]$/, '')}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        <!-- Animated detail panel -->
-        <div
-          id="prog-panel"
-          role="tabpanel"
-          aria-labelledby="prog-tab-0"
-          class="prog-panel"
-        >
-          <div class="prog-panel-grid">
-            <!-- Left rail: icon + big editorial number -->
-            <div class="prog-panel-rail">
-              <span id="progIconBox" class="icon-square icon-square-blue prog-iconbox">
-                <!-- Icon swapped via JS -->
-              </span>
-              <div class="prog-bignum" id="progBigNum">01</div>
-            </div>
-            <!-- Right column: title, body, key-fact -->
-            <div class="prog-panel-body">
-              <h3 id="progTitle" class="prog-title under-brand under-blue">
-                {programme[0].title}
-              </h3>
-              <p id="progBody" class="prog-body">{programme[0].body}</p>
-              <div class="prog-key">
-                <span id="progKeyBar" class="prog-key-bar" style="background: var(--color-brand-blue);"></span>
-                <span id="progKey">{programme[0].key}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Data island for JS (icons rendered server-side, JS clones them) -->
-        <div hidden id="progIconStore">
-          {programme.map((item, i) => {
-            const Icon = programmeIcons[item.visual];
-            return (
-              <span data-icon-for={i}><Icon size={28} strokeWidth={1.75} /></span>
+              <article class="prog-simple-item">
+                <span class={`prog-simple-rule prog-simple-rule-${accent}`} aria-hidden="true"></span>
+                <div class="flex items-center gap-3 mb-4">
+                  <span class={`prog-simple-icon prog-simple-icon-${accent}`}>
+                    <Icon size={22} strokeWidth={1.85} />
+                  </span>
+                  <span class="font-mono text-[11px] tracking-widest text-[var(--color-ink-faint)]">{item.num}</span>
+                </div>
+                <h3 class="text-[1.15rem] tracking-tight font-bold" style="color: var(--color-navy);">{item.title}</h3>
+                <p class="mt-2.5 text-[14px] leading-[1.55] text-[var(--color-ink-soft)]">{item.body}</p>
+                <p class="mt-3 text-[12px] text-[var(--color-ink-mute)]">{item.key}</p>
+              </article>
             );
           })}
         </div>
       </div>
-
-      <script is:inline define:vars={{ programme, programmeAccents }}>
-        (function () {
-          var TABS_DATA = programme.map(function (p, i) { return { num: p.num, title: p.title, body: p.body, key: p.key, accent: programmeAccents[i] }; });
-          var iconStore = document.getElementById('progIconStore');
-          var iconBox   = document.getElementById('progIconBox');
-          var bigNum    = document.getElementById('progBigNum');
-          var titleEl   = document.getElementById('progTitle');
-          var bodyEl    = document.getElementById('progBody');
-          var keyEl     = document.getElementById('progKey');
-          var keyBar    = document.getElementById('progKeyBar');
-          var panel     = document.getElementById('prog-panel');
-          var tabs      = document.querySelectorAll('.prog-tab');
-
-          var ACCENT_COLOR = {
-            blue:  'var(--color-brand-blue)',
-            green: 'var(--color-brand-green)',
-            gold:  'var(--color-brand-gold)',
-          };
-
-          function setIcon(i) {
-            var src = iconStore.querySelector('[data-icon-for="' + i + '"]');
-            if (!src) return;
-            iconBox.innerHTML = src.innerHTML;
-          }
-
-          function setAccent(accent) {
-            iconBox.className = 'icon-square icon-square-' + accent + ' prog-iconbox';
-            bigNum.style.color  = ACCENT_COLOR[accent];
-            titleEl.className   = 'prog-title under-brand under-' + accent;
-            keyBar.style.background = ACCENT_COLOR[accent];
-            // animated brand-color bottom border on panel
-            panel.style.setProperty('--panel-accent', ACCENT_COLOR[accent]);
-          }
-
-          var current = 0;
-          function activate(i, opts) {
-            opts = opts || {};
-            if (i === current && !opts.force) return;
-            var data = TABS_DATA[i];
-            tabs.forEach(function (t, j) {
-              t.setAttribute('aria-selected', j === i ? 'true' : 'false');
-              t.setAttribute('tabindex', j === i ? '0' : '-1');
-              t.classList.toggle('is-active', j === i);
-            });
-            current = i;
-
-            // GSAP morph if available; otherwise instant
-            if (window.gsap) {
-              var tl = window.gsap.timeline();
-              tl.to([titleEl, bodyEl, keyEl, iconBox, bigNum], { opacity: 0, y: 6, duration: 0.18, ease: 'power2.in', stagger: 0.02 })
-                .add(function () {
-                  bigNum.textContent  = data.num;
-                  titleEl.textContent = data.title;
-                  bodyEl.textContent  = data.body;
-                  keyEl.textContent   = data.key;
-                  setIcon(i);
-                  setAccent(data.accent);
-                })
-                .fromTo([titleEl, bodyEl, keyEl, iconBox, bigNum], { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power3.out', stagger: 0.04 });
-            } else {
-              bigNum.textContent  = data.num;
-              titleEl.textContent = data.title;
-              bodyEl.textContent  = data.body;
-              keyEl.textContent   = data.key;
-              setIcon(i);
-              setAccent(data.accent);
-            }
-          }
-
-          // Wire clicks
-          tabs.forEach(function (tab, i) {
-            tab.addEventListener('click', function () { activate(i); });
-            // Arrow-key nav per WAI-ARIA tabs pattern
-            tab.addEventListener('keydown', function (e) {
-              var n = tabs.length;
-              if (e.key === 'ArrowRight') { var ni = (i + 1) % n; tabs[ni].focus(); activate(ni); e.preventDefault(); }
-              if (e.key === 'ArrowLeft')  { var ni = (i - 1 + n) % n; tabs[ni].focus(); activate(ni); e.preventDefault(); }
-              if (e.key === 'Home')       { tabs[0].focus(); activate(0); e.preventDefault(); }
-              if (e.key === 'End')        { tabs[n-1].focus(); activate(n-1); e.preventDefault(); }
-            });
-          });
-
-          // Initial paint
-          activate(0, { force: true });
-        })();
-      </script>
     </section>
 
     <!-- ============================================================
@@ -400,20 +309,13 @@ const sources = [
 
         <div class="grid md:grid-cols-3 gap-6" data-reveal-stagger>
           {whyGtp.map((p, i) => {
-            const Ico        = p.icon;
-            const accent     = p.bar;
-            const iconClass  = `icon-square icon-square-${accent}`;
-            const underClass = `under-brand under-${accent}`;
-            const topClass   = `accent-top-${accent}`;
+            const Ico    = p.icon;
+            const accent = p.bar;
             return (
-              <div
-                class={`card-soft is-${accent} ${topClass} h-full flex flex-col`}
-                data-tilt
-                data-tilt-max="3"
-              >
-                <span class={iconClass}><Ico size={24} strokeWidth={1.75} /></span>
-                <h3 class={`mt-5 text-[1.35rem] tracking-tight inline-block self-start ${underClass}`} style="color: var(--color-navy);">{p.title}</h3>
-                <p class="mt-4 text-[15px] leading-relaxed text-[var(--color-ink-soft)]">{p.body}</p>
+              <div class={`solid-tile solid-${accent} h-full flex flex-col`}>
+                <span class="solid-icon"><Ico size={24} strokeWidth={1.85} /></span>
+                <h3 class="solid-title">{p.title}</h3>
+                <p class="solid-body">{p.body}</p>
               </div>
             );
           })}
