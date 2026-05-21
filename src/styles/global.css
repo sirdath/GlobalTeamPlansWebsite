@@ -842,39 +842,134 @@ select.field { appearance: none; background-image: linear-gradient(45deg, transp
 }
 
 /* ========================================
-   Programme — simple minimal treatment (borderless, top rule)
+   Programme — photo cards with brand-duotone media
    ======================================== */
-.prog-simple {
+.prog-photogrid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2.25rem 2.5rem;
+  gap: 1.5rem;
 }
-@media (min-width: 640px)  { .prog-simple { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1000px) { .prog-simple { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 640px)  { .prog-photogrid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .prog-photogrid { grid-template-columns: repeat(3, 1fr); } }
 
-.prog-simple-item {
+.prog-pc {
+  --duo-dark: #00496A;
+  --duo-light: #7AC4E0;
+  --duo-accent: var(--color-brand-blue);
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-rule);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.prog-pc-blue  { --duo-dark: #00496A; --duo-light: #6FC0DD; --duo-accent: var(--color-brand-blue); }
+.prog-pc-green { --duo-dark: #155E34; --duo-light: #88D2A4; --duo-accent: var(--color-brand-green); }
+.prog-pc-gold  { --duo-dark: #B07F00; --duo-light: #F6D785; --duo-accent: var(--color-brand-gold); }
+
+@media (hover: hover) and (pointer: fine) {
+  .prog-pc:hover {
+    border-color: var(--duo-accent);
+    transform: translateY(-4px);
+    box-shadow: 0 14px 34px -16px rgba(18, 50, 74, 0.32);
+  }
+}
+
+/* Media: brand gradient placeholder; real photo multiplies over it = duotone */
+.prog-pc-media {
   position: relative;
-  padding-top: 1.25rem;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(150deg, var(--duo-light) 0%, var(--duo-dark) 100%);
+  overflow: hidden;
 }
-.prog-simple-rule {
+.prog-pc-media img {
   position: absolute;
-  top: 0; left: 0;
-  width: 40px;
-  height: 3px;
-  border-radius: 2px;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.08);
+  mix-blend-mode: multiply;
 }
-.prog-simple-rule-blue  { background: var(--color-brand-blue); }
-.prog-simple-rule-green { background: var(--color-brand-green); }
-.prog-simple-rule-gold  { background: var(--color-brand-gold); }
+/* Highlight tint for the duotone's light end */
+.prog-pc-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--duo-light);
+  mix-blend-mode: screen;
+  opacity: 0.22;
+  pointer-events: none;
+}
 
-.prog-simple-icon {
+.prog-pc-icon {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 40px;
   height: 40px;
   border-radius: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--duo-accent);
+  box-shadow: 0 2px 10px rgba(18, 50, 74, 0.18);
 }
-.prog-simple-icon-blue  { background: var(--color-brand-blue-pale);  color: var(--color-brand-blue); }
-.prog-simple-icon-green { background: var(--color-brand-green-pale); color: var(--color-brand-green-dark); }
-.prog-simple-icon-gold  { background: var(--color-brand-gold-pale);  color: var(--color-brand-gold-dark); }
+.prog-pc-num {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.9rem;
+  z-index: 2;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 2.75rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #FFFFFF;
+  opacity: 0.85;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+.prog-pc-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 1.4rem 1.4rem 1.5rem;
+}
+.prog-pc-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--color-navy);
+}
+.prog-pc-text {
+  margin-top: 0.65rem;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+  flex-grow: 1;
+}
+.prog-pc-key {
+  margin-top: 1.1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--color-rule);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--color-ink-mute);
+  position: relative;
+  padding-left: 1.1rem;
+}
+.prog-pc-key::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1.2rem;
+  width: 12px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--duo-accent);
+}

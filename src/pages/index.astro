@@ -271,23 +271,29 @@ const sources = [
           </p>
         </div>
 
-        <!-- Simple treatment — minimal, borderless, brand-color top rule per item -->
-        <div class="prog-simple" data-reveal-stagger>
+        <!-- Photo cards with brand-duotone media (gradient placeholder until real photos drop in) -->
+        <div class="prog-photogrid" data-reveal-stagger>
           {programme.map((item, i) => {
             const Icon   = programmeIcons[item.visual];
             const accent = programmeAccents[i];
             return (
-              <article class="prog-simple-item">
-                <span class={`prog-simple-rule prog-simple-rule-${accent}`} aria-hidden="true"></span>
-                <div class="flex items-center gap-3 mb-4">
-                  <span class={`prog-simple-icon prog-simple-icon-${accent}`}>
-                    <Icon size={22} strokeWidth={1.85} />
-                  </span>
-                  <span class="font-mono text-[11px] tracking-widest text-[var(--color-ink-faint)]">{item.num}</span>
+              <article class={`prog-pc prog-pc-${accent}`}>
+                <div class="prog-pc-media">
+                  <img
+                    src={`/programme/prog-${item.visual}.webp`}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    onerror="this.style.display='none'"
+                  />
+                  <span class="prog-pc-icon"><Icon size={20} strokeWidth={1.9} /></span>
+                  <span class="prog-pc-num" aria-hidden="true">{item.num}</span>
                 </div>
-                <h3 class="text-[1.15rem] tracking-tight font-bold" style="color: var(--color-navy);">{item.title}</h3>
-                <p class="mt-2.5 text-[14px] leading-[1.55] text-[var(--color-ink-soft)]">{item.body}</p>
-                <p class="mt-3 text-[12px] text-[var(--color-ink-mute)]">{item.key}</p>
+                <div class="prog-pc-body">
+                  <h3 class="prog-pc-title">{item.title}</h3>
+                  <p class="prog-pc-text">{item.body}</p>
+                  <p class="prog-pc-key">{item.key}</p>
+                </div>
               </article>
             );
           })}
