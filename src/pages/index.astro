@@ -228,12 +228,12 @@ const sources = [
           function start() {
             if (!window.WorldMap) return setTimeout(start, 50);
             var mapEl = document.getElementById('partnership-map');
-            var sub = (mapEl && mapEl.clientWidth < 520) ? 3 : 4; // lighter on small screens
+            var sub = (mapEl && mapEl.clientWidth < 520) ? 2 : 3; // far fewer SVG nodes
             window.WorldMap.init('#partnership-map', {
               dots: [],
               coverage: [],         // no overlay markers — clean green halftone landmass
-              subdivide: sub,       // dense halftone continents (3 on mobile, 4 on desktop)
-              density: 0.92,        // tuned so dense dots stay crisp, not blobby
+              subdivide: sub,       // halftone continents (2 on mobile, 3 on desktop)
+              density: 1.05,        // slightly larger dots to keep the fill dense at lower count
             });
           }
           if (document.readyState !== 'loading') start();
