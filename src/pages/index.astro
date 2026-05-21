@@ -118,7 +118,6 @@ const sources = [
             const Ico = a.icon;
             return (
               <article class={`grad-tile grad-${a.accent}`} data-grad-tile>
-                <span class="grad-shine" aria-hidden="true"></span>
                 <span class="grad-icon"><Ico size={26} strokeWidth={1.85} /></span>
                 <h3 class="grad-title">{a.title}</h3>
                 <p class="grad-body">{a.body}</p>
@@ -134,7 +133,6 @@ const sources = [
             var tiles = Array.prototype.slice.call(document.querySelectorAll('#audienceGrid [data-grad-tile]'));
             if (!tiles.length) return;
             var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            var fineHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
             if (window.gsap && !reduced) {
               window.gsap.set(tiles, { opacity: 0, y: 30, scale: 0.94 });
               window.gsap.to(tiles, {
@@ -142,17 +140,6 @@ const sources = [
                 stagger: 0.12,
                 scrollTrigger: { trigger: '#audienceGrid', start: 'top 82%', once: true },
               });
-              if (fineHover) {
-                tiles.forEach(function (tile) {
-                  var shine = tile.querySelector('.grad-shine');
-                  tile.addEventListener('mouseenter', function () {
-                    window.gsap.fromTo(shine,
-                      { xPercent: -130, opacity: 0 },
-                      { xPercent: 130, opacity: 1, duration: 0.75, ease: 'power2.out',
-                        onComplete: function () { window.gsap.set(shine, { opacity: 0 }); } });
-                  });
-                });
-              }
             } else {
               tiles.forEach(function (t) { t.style.opacity = '1'; });
             }

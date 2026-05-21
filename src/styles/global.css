@@ -694,96 +694,53 @@ select.field { appearance: none; background-image: linear-gradient(45deg, transp
 }
 
 .grad-tile {
-  --g-fg: #FFFFFF;
-  --g-fg-soft: rgba(255, 255, 255, 0.88);
-  --g-chip: rgba(255, 255, 255, 0.18);
+  --g-accent: var(--color-brand-blue);
+  --g-chip-bg: var(--color-brand-blue-pale);
+  --g-chip-fg: var(--color-brand-blue);
   position: relative;
-  overflow: hidden;
-  isolation: isolate;
   display: flex;
   flex-direction: column;
   padding: 2rem 1.75rem;
   border-radius: 18px;
-  color: var(--g-fg);
-  min-height: 280px;
-  box-shadow: 0 14px 36px -14px rgba(18, 50, 74, 0.32);
-  transition: transform 0.3s cubic-bezier(0.2,0.9,0.25,1), box-shadow 0.3s ease;
-  will-change: transform;
+  background: #FFFFFF;
+  border: 1.5px solid var(--g-accent);
+  min-height: 240px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-
-/* Each tile: a diagonal gradient of its own colour + a soft radial glow
-   in the NEXT brand colour at the top-right, so blue→green→gold flow. */
-.grad-blue {
-  background:
-    radial-gradient(120% 90% at 100% 0%, rgba(47,174,98,0.55) 0%, transparent 45%),
-    linear-gradient(150deg, #1487B8 0%, #005E82 70%, #004D6B 100%);
-}
-.grad-green {
-  background:
-    radial-gradient(120% 90% at 100% 0%, rgba(230,169,0,0.55) 0%, transparent 45%),
-    linear-gradient(150deg, #36BB6C 0%, #1E7A45 72%, #176237 100%);
-}
-.grad-gold {
-  background:
-    radial-gradient(120% 90% at 100% 0%, rgba(0,94,130,0.45) 0%, transparent 48%),
-    linear-gradient(150deg, #F7C73E 0%, #E6A900 72%, #CC9600 100%);
-  --g-fg: #12324A;
-  --g-fg-soft: rgba(18, 50, 74, 0.82);
-  --g-chip: rgba(18, 50, 74, 0.12);
-}
+.grad-blue  { --g-accent: var(--color-brand-blue);  --g-chip-bg: var(--color-brand-blue-pale);  --g-chip-fg: var(--color-brand-blue); }
+.grad-green { --g-accent: var(--color-brand-green); --g-chip-bg: var(--color-brand-green-pale); --g-chip-fg: var(--color-brand-green-dark); }
+.grad-gold  { --g-accent: var(--color-brand-gold);  --g-chip-bg: var(--color-brand-gold-pale);  --g-chip-fg: var(--color-brand-gold-dark); }
 
 @media (hover: hover) and (pointer: fine) {
   .grad-tile:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 26px 50px -16px rgba(18, 50, 74, 0.42);
+    transform: translateY(-5px);
+    box-shadow: 0 16px 36px -16px color-mix(in srgb, var(--g-accent) 45%, transparent);
   }
 }
 
-.grad-shine {
-  position: absolute;
-  top: 0; left: 0;
-  width: 55%;
-  height: 100%;
-  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.4), transparent);
-  transform: translateX(-130%);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 3;
-}
-.grad-gold .grad-shine {
-  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.6), transparent);
-}
-
 .grad-icon {
-  position: relative;
-  z-index: 2;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  background: var(--g-chip);
-  color: var(--g-fg);
+  background: var(--g-chip-bg);
+  color: var(--g-chip-fg);
   margin-bottom: 1.25rem;
-  backdrop-filter: blur(2px);
 }
 .grad-title {
-  position: relative;
-  z-index: 2;
   font-size: 1.35rem;
   font-weight: 700;
   letter-spacing: -0.015em;
   line-height: 1.2;
-  color: var(--g-fg);
+  color: var(--color-navy);
 }
 .grad-body {
-  position: relative;
-  z-index: 2;
   margin-top: 0.75rem;
   font-size: 14.5px;
   line-height: 1.6;
-  color: var(--g-fg-soft);
+  color: var(--color-ink-soft);
 }
 
 @media (prefers-reduced-motion: reduce) {
